@@ -1,0 +1,658 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<title>Creative Archive · Grace Danico</title>
+<meta name="description" content="Fifteen years of drawing for the fun of it — lettering, risograph, airbrushed creatures, fake album covers, and one bumper sticker that makes strangers honk." />
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Grace Danico" />
+<meta property="og:title" content="Creative Archive · Grace Danico" />
+<meta property="og:description" content="Fifteen years of drawing for the fun of it — lettering, risograph, airbrushed creatures, fake album covers, and one bumper sticker that makes strangers honk." />
+<meta property="og:url" content="https://gracedanico.com/case-creative-archive.html" />
+<meta property="og:image" content="https://gracedanico.com/About/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Grace Danico — pink hair, green bandana, indigo chore coat, on a grey ground" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Creative Archive · Grace Danico" />
+<meta name="twitter:description" content="Fifteen years of drawing for the fun of it — lettering, risograph, airbrushed creatures, fake album covers, and one bumper sticker that makes strangers honk." />
+<meta name="twitter:image" content="https://gracedanico.com/About/og-cover.jpg" />
+<meta name="theme-color" content="#0A0A0A" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: 'var(--bg)', oat: 'var(--fg)', lichen: 'var(--lichen)',
+          chartreuse: 'var(--chartreuse)', hairline: 'var(--hairline)',
+          pink: 'var(--candy-pink)', sky: 'var(--candy-sky)', sun: 'var(--candy-sun)',
+        },
+        fontFamily: {
+          grotesk: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono:    ['"Martian Mono"', 'ui-monospace', 'monospace'],
+        },
+        maxWidth: { shell: '1280px', wordmark: '1240px' },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root {
+    --bg: #0A0A0A; --fg: #FAF8F5; --lichen: #CDFF7B; --chartreuse: #22C55E;
+    --hairline: rgba(250, 248, 245, 0.12);
+    --candy-pink: #FF4FA3; --candy-sky: #4FC3FF; --candy-sun: #FFD53E;
+  }
+  html.oat {
+    --bg: #FAF8F5; --fg: #14140F; --lichen: #2F6B00; --chartreuse: #16A34A;
+    --hairline: rgba(20, 20, 15, 0.14);
+    --candy-pink: #E11D74; --candy-sky: #0C8FD4; --candy-sun: #E0A400;
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); overflow-x: hidden; }
+  ::selection { background: var(--lichen); color: #0A0A0A; }
+
+  .grain::after {
+    content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 60;
+    opacity: .05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 8s steps(6) infinite;
+  }
+  @keyframes grain {
+    0%,100%{transform:translate(0,0)} 20%{transform:translate(-4%,3%)} 40%{transform:translate(3%,-5%)}
+    60%{transform:translate(-2%,4%)} 80%{transform:translate(5%,2%)}
+  }
+
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--chartreuse); z-index: 70; transition: width .1s linear; }
+
+  .has-cursor, .has-cursor a, .has-cursor button, .has-cursor [data-magnetic] { cursor: none; }
+  #cursor-ring, #cursor-dot {
+    position: fixed; top: 0; left: 0; z-index: 80; pointer-events: none;
+    border-radius: 9999px; transform: translate(-100px,-100px); mix-blend-mode: difference;
+  }
+  #cursor-ring {
+    width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1px solid #FAF8F5;
+    transition: width .25s cubic-bezier(.16,1,.3,1), height .25s cubic-bezier(.16,1,.3,1),
+                margin .25s cubic-bezier(.16,1,.3,1), background-color .25s;
+  }
+  #cursor-dot { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: #FAF8F5; }
+  #cursor-ring.is-active { width: 68px; height: 68px; margin: -34px 0 0 -34px; background: rgba(205,255,123,.18); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: .08s; }
+  .reveal[data-delay="2"] { transition-delay: .16s; }
+  .reveal[data-delay="3"] { transition-delay: .24s; }
+
+  /* ---- Eye-candy bits ---- */
+
+  /* a tilted image that snaps straight + pops on hover */
+  .pop {
+    position: relative;
+    transform: rotate(var(--rot, 0deg));
+    transition: transform .45s cubic-bezier(.16,1,.3,1), box-shadow .45s;
+  }
+  .pop > img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media (hover: hover) and (pointer: fine) {
+    .pop:hover { transform: rotate(0deg) scale(1.035); z-index: 30; }
+    .pop:hover > img { box-shadow: 0 34px 70px -24px rgba(0,0,0,.55); }
+  }
+
+  /* white-bordered "sticker" frame */
+  .frame {
+    background: #fff; padding: .55rem; border-radius: .5rem;
+    box-shadow: 0 16px 38px -14px rgba(0,0,0,.5);
+  }
+  .frame > img { border-radius: .18rem; }
+
+  /* section kicker chip */
+  .kicker {
+    display: inline-flex; align-items: center; gap: .5rem;
+    font: 500 11px/1 "Martian Mono", monospace; letter-spacing: .22em; text-transform: uppercase;
+    color: #0A0A0A; background: var(--lichen); padding: .5rem .7rem; border-radius: 999px;
+  }
+
+  /* infinite bumper-sticker marquee */
+  .marquee { overflow: hidden; -webkit-mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
+             mask: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent); }
+  .marquee-track { display: flex; align-items: center; gap: 2.6rem; width: max-content; animation: marquee 46s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee .frame { flex: none; transform: rotate(var(--rot, 0deg)); }
+  .marquee .frame img { height: clamp(92px, 12.5vw, 158px); width: auto; display: block; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* honk pop */
+  .honk {
+    position: fixed; z-index: 95; pointer-events: none; user-select: none; white-space: nowrap;
+    font: 800 clamp(1.8rem, 5.5vw, 3.4rem)/1 "Space Grotesk", sans-serif;
+    color: var(--honk-c, var(--candy-sun));
+    text-shadow: 3px 3px 0 #0A0A0A, -1px -1px 0 #0A0A0A;
+    transform: translate(-50%, -50%) rotate(var(--r, -6deg)) scale(.3);
+    animation: honk 900ms cubic-bezier(.2,.75,.2,1) forwards;
+  }
+  @keyframes honk {
+    0%   { opacity: 0; transform: translate(-50%,-50%) rotate(var(--r)) scale(.3); }
+    18%  { opacity: 1; transform: translate(-50%,-52%) rotate(var(--r)) scale(1.12); }
+    32%  { transform: translate(-50%,-54%) rotate(var(--r)) scale(1); }
+    100% { opacity: 0; transform: translate(-50%,-190%) rotate(var(--r)) scale(1); }
+  }
+
+  .tape {
+    position: absolute; width: 90px; height: 26px; background: rgba(255,213,62,.55);
+    box-shadow: 0 2px 6px rgba(0,0,0,.15); backdrop-filter: blur(1px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .grain::after { animation: none; }
+    .marquee-track { animation: none; }
+    .honk { animation: honk-still 900ms ease-out forwards; }
+    @keyframes honk-still { 0%{opacity:0} 15%{opacity:1} 100%{opacity:0} }
+    #cursor-ring, #cursor-dot { display: none; }
+    .pop { transform: none; }
+  }
+
+  /* Easter egg — hover the wordmark, the letters bounce */
+  .wm { white-space: pre; }
+  .wm-letter { display: inline-block; will-change: transform; }
+  [data-bounce]:hover .wm-letter {
+    animation: wm-bounce .5s cubic-bezier(.28,.84,.42,1) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  @keyframes wm-bounce {
+    0%   { transform: translateY(0); }
+    35%  { transform: translateY(-0.42em); }
+    60%  { transform: translateY(0.09em); }
+    80%  { transform: translateY(-0.04em); }
+    100% { transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-bounce]:hover .wm-letter { animation: none; }
+  }
+</style>
+</head>
+
+<body class="grain font-grotesk antialiased">
+
+<div id="progress"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+
+<div class="mx-auto w-full max-w-shell px-6 lg:px-5">
+
+  <!-- Slim header -->
+  <header class="flex h-20 items-center justify-between border-b border-hairline">
+    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-lichen">
+      <svg class="h-5 w-5 shrink-0 transition-transform duration-500 group-hover:rotate-[24deg]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M7 11q5-7 10 0Z"/>
+        <ellipse cx="12" cy="12.5" rx="10" ry="3"/>
+        <path d="M8.5 16.5l-1.5 4M15.5 16.5l1.5 4M12 17v4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span data-bounce class="wm text-[15px] font-bold tracking-tight">Grace Danico</span>
+    </a>
+    <nav class="flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] sm:gap-7">
+      <a href="index.html#work" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">Work</a>
+      <a href="about.html" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">About</a>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       PROJECT HEADER
+       ============================================================ -->
+  <header class="grid gap-12 py-16 lg:grid-cols-[1fr_300px] lg:gap-16 lg:py-24">
+    <div>
+      <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-lichen">Personal Practice · Since 2011</p>
+      <h1 class="reveal mt-6 text-[clamp(2.6rem,7vw,5.5rem)] font-bold leading-[0.95] tracking-[-0.03em]">Creative<br>Archive</h1>
+      <p class="reveal mt-8 max-w-[46ch] text-[20px] font-medium leading-[1.4] text-oat/70" data-delay="1">The drawings that don&rsquo;t have a client. Fifteen-ish years of lettering, risograph, airbrushed creatures, fake album covers &mdash; and one bumper sticker that makes strangers roll down their window.</p>
+    </div>
+
+    <aside class="reveal self-end" data-delay="2">
+      <dl class="grid grid-cols-2 gap-x-6 gap-y-7 border-t border-hairline pt-7 lg:grid-cols-1">
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Role</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Drew it, lettered it, printed it</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Timeline</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">2011 &rarr; still going</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Client</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Nobody. Everybody.</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Medium</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Ink, riso, airbrush, 3D, whatever&rsquo;s open</dd>
+        </div>
+      </dl>
+    </aside>
+  </header>
+
+  <!-- Hero -->
+  <div class="reveal mb-6 w-full">
+    <div class="pop overflow-hidden rounded-2xl border border-hairline" style="--rot:-1.2deg">
+      <img src="Case%20Studies/012_Illustration%20Archive/web/arch-tc-wide.jpg" alt="A daisy-headed character with banana legs walking across a purple starfield — from the ongoing Take Care series" width="1400" height="735" loading="eager"
+           class="aspect-[16/10] w-full object-cover lg:aspect-[21/9]" />
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     BUMPERWARE
+     ============================================================ -->
+<section class="mt-24 lg:mt-32">
+  <div class="mx-auto max-w-wordmark px-6 lg:px-5">
+    <span class="reveal kicker">🚗 Bumperware</span>
+    <div class="reveal mt-6 grid gap-8 lg:grid-cols-[1fr_auto] lg:items-end">
+      <div>
+        <h2 class="text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">I get honked at a lot.</h2>
+        <p class="mt-5 max-w-[52ch] text-[17px] leading-[1.6] text-oat/70">These are real. They&rsquo;re on my actual car, in Los Angeles, where people have real opinions about a serif. <em>&ldquo;Honk if you&rsquo;re tired&rdquo;</em> has started more freeway conversations than I can count &mdash; not all of them friendly.</p>
+      </div>
+      <button id="honk-btn" type="button" data-magnetic
+        class="frame shrink-0 self-start rounded-lg text-[15px] font-bold uppercase tracking-[0.14em] text-[#0A0A0A] transition-transform hover:-translate-y-0.5"
+        style="transform:rotate(2.5deg)">
+        Press to honk 📣
+      </button>
+    </div>
+  </div>
+
+  <div id="bumper-band" class="marquee reveal mt-12 cursor-pointer py-4" role="img" aria-label="A scrolling row of Grace Danico's bumper stickers: 'If you can read this, you know how to read'; 'A.D.H.D. — Another Damn Headache. Damn.'; 'Back it up! Only you can prevent data loss'; 'Offline & doin' fine'; 'Honk if you're tired'; 'I'd rather be singing at Max Karaoke'; 'Keep honking! I'm listening to Jeff Lorber Fusion's Galaxian'; 'Walang hiya'.">
+    <div class="marquee-track">
+      <!-- set A -->
+      <span class="frame" style="--rot:-3deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-read.png" alt="Bumper sticker: If you can read this, you know how to read." width="1500" height="470" loading="lazy" /></span>
+      <span class="frame" style="--rot:2.5deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-adhd.png" alt="Bumper sticker: A.D.H.D. — Another Damn Headache. Damn." width="1500" height="470" loading="lazy" /></span>
+      <span class="frame" style="--rot:2deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-karaoke.png" alt="Bumper sticker: I'd rather be singing at Max Karaoke." width="1500" height="463" loading="lazy" /></span>
+      <span class="frame" style="--rot:-1.5deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-backup.jpg" alt="Bumper sticker: Back it up! Only you can prevent data loss — with a walking file-folder character." width="1600" height="599" loading="lazy" /></span>
+      <span class="frame" style="--rot:-2deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-galaxian.png" alt="Bumper sticker: Keep honking! I'm listening to Jeff Lorber Fusion's Galaxian." width="1500" height="459" loading="lazy" /></span>
+      <span class="frame" style="--rot:3deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-offline.jpg" alt="Bumper sticker: Offline & doin' fine — with a pixel smiley." width="1600" height="498" loading="lazy" /></span>
+      <span class="frame" style="--rot:3deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-walanghiya.jpg" alt="Bumper sticker: Walang hiya — in brush lettering on a rainbow gradient." width="1600" height="496" loading="lazy" /></span>
+      <span class="frame" style="--rot:-2.5deg"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-tired.jpg" alt="Bumper sticker: Honk if you're tired — rainbow gradient." width="1600" height="498" loading="lazy" /></span>
+      <!-- set B (duplicate for seamless loop) -->
+      <span class="frame" style="--rot:-3deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-read.png" alt="" width="1500" height="470" loading="lazy" /></span>
+      <span class="frame" style="--rot:2.5deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-adhd.png" alt="" width="1500" height="470" loading="lazy" /></span>
+      <span class="frame" style="--rot:2deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-karaoke.png" alt="" width="1500" height="463" loading="lazy" /></span>
+      <span class="frame" style="--rot:-1.5deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-backup.jpg" alt="" width="1600" height="599" loading="lazy" /></span>
+      <span class="frame" style="--rot:-2deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-galaxian.png" alt="" width="1500" height="459" loading="lazy" /></span>
+      <span class="frame" style="--rot:3deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-offline.jpg" alt="" width="1600" height="498" loading="lazy" /></span>
+      <span class="frame" style="--rot:3deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-walanghiya.jpg" alt="" width="1600" height="496" loading="lazy" /></span>
+      <span class="frame" style="--rot:-2.5deg" aria-hidden="true"><img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-tired.jpg" alt="" width="1600" height="498" loading="lazy" /></span>
+    </div>
+  </div>
+  <p class="mx-auto mt-4 max-w-wordmark px-6 text-center font-mono text-[10px] uppercase tracking-[0.22em] text-oat/40 lg:px-5">Tap the stickers &middot; honk back</p>
+</section>
+
+<main class="mx-auto mt-16 max-w-shell px-6 lg:mt-24 lg:px-5">
+
+  <!-- ============================================================
+       TAKE CARE
+       ============================================================ -->
+  <section>
+    <div class="reveal max-w-wordmark">
+      <span class="kicker" style="background:var(--candy-pink);color:#fff">✿ Take Care</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">A playlist and a painting for getting through it.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Take Care started the week after the 2016 election &mdash; a self-initiated series of playlists, each with a new airbrushed cover, made to hand someone (usually me) something soft to hold. It kept going. The covers were selected for <em>American Illustration</em>.</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-4">
+      <div class="pop col-span-2 row-span-2 rounded-xl border border-hairline overflow-hidden lg:col-span-2" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-hero.jpg" alt="Airbrushed illustration: a smiling sun hugging a crying cloud under a rainbow" width="1600" height="2000" loading="lazy" class="aspect-[4/5] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-tc-01.jpg" alt="Illustration: a daisy-headed figure with banana legs and orange shoes" width="1200" height="1200" loading="lazy" class="aspect-square w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-2.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-tc-03.jpg" alt="Illustration: an inflatable golden star character dancing on a checkerboard floor" width="960" height="1200" loading="lazy" class="aspect-[4/5] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:2.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-tc-02.jpg" alt="Illustration: a floppy-eared dog character in a melting hat holding a pink flower against a starry sky" width="960" height="1200" loading="lazy" class="aspect-[4/5] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-tc-04.jpg" alt="Illustration: a pastel stacked-bead vase character with droopy flowers on a green grid" width="960" height="1200" loading="lazy" class="aspect-[4/5] w-full" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       10 x THE YEAR
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal max-w-wordmark">
+      <span class="kicker" style="background:var(--candy-sky);color:#0A0A0A">◎ 10 &times; the year</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">Ten album covers nobody asked me to redraw.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Every year I pick ten records I love and redesign the sleeve &mdash; a self-set brief with a hard count and a soft rulebook. It&rsquo;s the fastest way I know to try on ten different ways of drawing in a row.</p>
+    </div>
+
+    <div class="mt-12 grid gap-4 sm:grid-cols-2 sm:gap-6">
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-10x-02.jpg" alt="Reimagined album sleeve on a vinyl mockup — melted white line-work face over a sunset-to-blue gradient, 'The Nice Price'" width="1600" height="900" loading="lazy" class="aspect-[16/9] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-10x-03.jpg" alt="Reimagined Blood Orange 'Negro Swan' sleeve on a vinyl mockup — an outstretched hand with long nails against a chain-link diamond pattern" width="1600" height="900" loading="lazy" class="aspect-[16/9] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-10x-04.jpg" alt="Reimagined Robyn 'Honey' sleeve on a vinyl mockup — a honey-filled hourglass with a pink heart" width="1600" height="900" loading="lazy" class="aspect-[16/9] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-10x-01.jpg" alt="Reimagined sleeve on a vinyl mockup — hand-drawn chrome script reading 'mudsyn / Body Wash' with a soap-bottle character on a blue grid" width="1600" height="1133" loading="lazy" class="aspect-[16/9] w-full object-cover" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MELODY LOUNGE
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal max-w-wordmark">
+      <span class="kicker" style="background:var(--candy-sun);color:#0A0A0A">♪ Melody Lounge</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">Flyers for a night I also DJ.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Magic Ways, first Fridays, Melody Lounge in Chinatown. I make the flyer, then I show up and play the records. Vertical integration.</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-3 sm:gap-6">
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-3deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-flyer-01.jpg" alt="Event flyer: green duotone portrait of a DJ with a Walkman and cassette, 'Magic Ways / Melody Lounge', dated 6.7" width="1199" height="1200" loading="lazy" class="aspect-square w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden sm:mt-8" style="--rot:2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-flyer-02.jpg" alt="Event flyer: blue halftone galaxy, 'Magic Ways / Melody Lounge', dated 8.2" width="1199" height="1200" loading="lazy" class="aspect-square w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-flyer-03.jpg" alt="Event flyer: purple-and-gold duotone of a figure holding a blow-dryer like a spy, 'Magic Ways / Melody Lounge', dated 9.6" width="1199" height="1200" loading="lazy" class="aspect-square w-full" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MOTION — Facebook NYE
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal max-w-wordmark">
+      <span class="kicker" style="background:var(--candy-sky);color:#0A0A0A">&#9654; Facebook &middot; New Year&rsquo;s Eve</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">The one that moves.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">A New Year&rsquo;s Eve moment for Facebook: I drew the whole cast &mdash; the wordmark itself, in top hats &mdash; and <a href="https://animade.tv" target="_blank" rel="noopener" class="text-oat underline decoration-hairline underline-offset-2 transition-colors hover:text-lichen">Animade</a> brought it to life. Eleven looping seconds of chrome creatures counting down to 2022.</p>
+    </div>
+
+    <div class="reveal mt-12">
+      <div class="pop overflow-hidden rounded-2xl border border-hairline" style="--rot:-1deg">
+        <video src="Case%20Studies/012_Illustration%20Archive/web/arch-nye.mp4"
+               poster="Case%20Studies/012_Illustration%20Archive/web/arch-nye-poster.jpg"
+               data-lazyplay width="2800" height="832" muted loop playsinline preload="none"
+               aria-label="Animated Facebook wordmark for New Year's Eve — each letter is a chrome creature in a gold top hat, with a winking clock, a disco ball, party favors and gold '2022' numerals, over fireworks and a pink grid floor"
+               class="block w-full bg-[#2b1a4a]"></video>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EDITORIAL
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal max-w-wordmark">
+      <span class="kicker">✎ When someone does ask</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">The work with an art director attached.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Illustration and hand-lettering for the press &mdash; sad obsolete gadgets, overwhelmed houseplants, a whole finance startup that just wants you to stop doing stupid stuff. Same hand, someone else&rsquo;s headline.</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-12">
+      <figure class="pop col-span-1 rounded-xl border border-hairline overflow-hidden lg:col-span-4" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-nyt.jpg" alt="Editorial illustration: a teary-eyed CD-ROM sitting on a pile of obsolete media — VHS, cassette, iPod, floppy disk" width="1108" height="1300" loading="lazy" class="aspect-[4/5] w-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">The New York Times &middot; &ldquo;The Final Delivery&rdquo;</figcaption>
+      </figure>
+      <figure class="pop col-span-1 rounded-xl border border-hairline overflow-hidden lg:col-span-4" style="--rot:2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-quartz-02.jpg" alt="Editorial illustration: three cheerful potted plants with cartoon eyes on an orange checkerboard floor" width="1500" height="1125" loading="lazy" class="aspect-[4/3] w-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">Quartz &middot; on prioritizing</figcaption>
+      </figure>
+      <figure class="pop col-span-2 rounded-xl border border-hairline overflow-hidden lg:col-span-4 lg:row-span-2" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-murray.jpg" alt="Illustration in a loose ink style: a tuxedoed man rubbing his eyes beside a bottle of Suntory whisky — 'For relaxing times, make it Suntory time.'" width="989" height="1400" loading="lazy" class="aspect-[3/4] w-full lg:aspect-auto lg:h-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">Suntory time &middot; not a commission, just love</figcaption>
+      </figure>
+      <figure class="pop col-span-1 rounded-xl border border-hairline overflow-hidden lg:col-span-4" style="--rot:2.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-zeit.jpg" alt="Magazine cover: a decorated Christmas tree with a big cartoon face and gloved hands, 'ZEIT Leo — Weihnachts-Quiz'" width="996" height="1200" loading="lazy" class="aspect-[5/6] w-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">ZEIT Leo &middot; holiday cover</figcaption>
+      </figure>
+      <figure class="pop col-span-1 rounded-xl border border-hairline overflow-hidden lg:col-span-4" style="--rot:-2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-quartz-01.jpg" alt="Editorial illustration: a wilting, teary potted plant with vines slumping across an orange checkerboard floor" width="1500" height="1125" loading="lazy" class="aspect-[4/3] w-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">Quartz &middot; on burnout</figcaption>
+      </figure>
+      <figure class="pop col-span-2 rounded-xl border border-hairline overflow-hidden lg:col-span-8" style="--rot:1deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-ed-finance.jpg" alt="Website design on a laptop mockup: a maximalist Y2K homepage for 'Hacking Finance' with blackletter type, rainbow nav, and 'Stop doing stupid stuff'" width="1600" height="924" loading="lazy" class="aspect-[16/9] w-full" />
+        <figcaption class="bg-white px-3 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-[#0A0A0A]/70">Hacking Finance &middot; art direction &amp; site design</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       MADE ANYWAY
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal max-w-wordmark">
+      <span class="kicker" style="background:var(--candy-pink);color:#fff">✂ Made anyway</span>
+      <h2 class="mt-6 text-[clamp(1.9rem,4.4vw,3rem)] font-bold leading-[1.05] tracking-[-0.02em]">Things that only exist because I printed them.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">A riso travel zine about Tokyo street style. A cassette that&rsquo;s really just an excuse for a cover. The word VOTE, blown up until it&rsquo;s uncomfortable. Objects with no reason to exist except that I wanted them to.</p>
+    </div>
+
+    <div class="mt-12 grid grid-cols-2 gap-4 sm:gap-5 lg:grid-cols-3">
+      <div class="pop col-span-2 rounded-xl border border-hairline overflow-hidden lg:col-span-2" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-zine-01.jpg" alt="A risograph zine on a spray-painted surface — purple grid cover with pink halftone circles, 'Tokyo Day Trippin' by Grace Danico'" width="1500" height="843" loading="lazy" class="aspect-[16/9] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:2.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-zine-02.jpg" alt="Interior spread of the Tokyo zine — blue pen sketches of people and street-style outfits on pink paper" width="869" height="1300" loading="lazy" class="aspect-[2/3] w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:-2.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-vote.jpg" alt="Hand-lettering: the word VOTE in psychedelic chrome bubble letters, grainy rainbow gradient on black" width="1100" height="1100" loading="lazy" class="aspect-square w-full" />
+      </div>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:2deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-busy.jpg" alt="Hand-lettering: 'hi, I'm BUSY' in melted chrome type on a hot-pink ground" width="1100" height="1100" loading="lazy" class="aspect-square w-full" />
+      </div>
+      <div class="pop col-span-2 rounded-xl border border-hairline overflow-hidden lg:col-span-1" style="--rot:-1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-cassette.jpg" alt="A cassette in a clear case on a green ground — iridescent cover art with a daisy-headed, banana-bodied character bouncing through bubbles" width="1500" height="1047" loading="lazy" class="aspect-[3/2] w-full" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CLOSING
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal border-b-2 border-chartreuse pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">The point of it</span>
+    </div>
+    <div class="reveal mt-12 grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <p class="text-[clamp(1.25rem,2.4vw,1.6rem)] font-medium leading-[1.45] tracking-[-0.01em] text-oat/90">Fun takes intention, and connection takes care. If anything here made you feel something, consider the job done.</p>
+      <div class="pop rounded-xl border border-hairline overflow-hidden" style="--rot:1.5deg">
+        <img src="Case%20Studies/012_Illustration%20Archive/web/arch-sticker-backup.jpg" alt="Bumper sticker: 'Back it up! Only you can prevent data loss' with a walking file-folder character" width="1600" height="599" loading="lazy" class="aspect-[16/6] w-full bg-white" />
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Next project -->
+<a href="case-forum-app.html" data-magnetic
+   class="group mt-32 block border-t border-hairline transition-colors duration-500 hover:bg-lichen">
+  <div class="mx-auto flex max-w-wordmark items-center justify-between gap-6 px-6 py-16 lg:px-5 lg:py-24">
+    <div>
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-oat/50 transition-colors group-hover:text-[#0A0A0A]/60">Next Project</p>
+      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-[#0A0A0A]">Forum App</h2>
+    </div>
+    <span class="shrink-0 text-4xl text-lichen transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0A0A0A] lg:text-6xl">&#8599;</span>
+  </div>
+</a>
+
+<footer class="mx-auto max-w-wordmark px-6 py-10 lg:px-5">
+  <div class="flex flex-col gap-4 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/45">&copy; <span id="year">2026</span> Grace Danico</p>
+    <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em]">
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="mailto:hello@gracedanico.com">Email</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
+      <button id="theme-toggle" data-magnetic type="button" aria-pressed="false"
+              class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/50 transition-colors hover:text-lichen sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
+        Light mode
+      </button>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer  = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const bar = document.getElementById("progress");
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  const ring = document.getElementById("cursor-ring");
+  const dot  = document.getElementById("cursor-dot");
+  if (finePointer && !reduceMotion) {
+    document.documentElement.classList.add("has-cursor");
+    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+    addEventListener("pointermove", (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px)`;
+    }, { passive: true });
+    (function loop(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`; requestAnimationFrame(loop); })();
+    const grow = () => ring.classList.add("is-active");
+    const shrink = () => ring.classList.remove("is-active");
+    document.querySelectorAll('a, button, [data-magnetic]').forEach((el) => {
+      el.addEventListener("pointerenter", grow);
+      el.addEventListener("pointerleave", shrink);
+    });
+  }
+
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll("[data-magnetic]").forEach((el) => {
+      el.style.transition = "transform .35s cubic-bezier(.16,1,.3,1)";
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        el.style.transform = `translate(${x*0.22}px, ${y*0.22}px)`;
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  /* ---- Lazy-play heavy video: only fetch + play once it's near the viewport ---- */
+  const vids = document.querySelectorAll("video[data-lazyplay]");
+  if (vids.length) {
+    const tryPlay = (v) => {
+      if (reduceMotion || !v.dataset.inview || document.hidden) return;
+      v.play().catch(() => {
+        v.addEventListener("canplay", () => tryPlay(v), { once: true });
+      });
+    };
+    const vio = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        const v = en.target;
+        if (en.isIntersecting) { v.dataset.inview = "1"; tryPlay(v); }
+        else { delete v.dataset.inview; v.pause(); }
+      });
+    }, { rootMargin: "200px 0px" });
+    vids.forEach((v) => vio.observe(v));
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) vids.forEach(tryPlay);
+    });
+  }
+
+  /* ---- Honk ---- */
+  const WORDS = ["HONK!", "BEEP BEEP", "HONK HONK", "🚗💨", "I LOVE IT", "READ A BOOK", "SAME", "🎉"];
+  const COLORS = ["var(--candy-sun)", "var(--candy-pink)", "var(--candy-sky)", "var(--lichen)"];
+  let lastHonk = 0;
+  function honkAt(x, y) {
+    const now = performance.now();
+    if (now - lastHonk < 90) return;
+    lastHonk = now;
+    const el = document.createElement("div");
+    el.className = "honk";
+    el.textContent = WORDS[(Math.random() * WORDS.length) | 0];
+    el.style.left = x + "px";
+    el.style.top = y + "px";
+    el.style.setProperty("--r", (Math.random() * 24 - 12).toFixed(1) + "deg");
+    el.style.setProperty("--honk-c", COLORS[(Math.random() * COLORS.length) | 0]);
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 950);
+  }
+  const band = document.getElementById("bumper-band");
+  if (band) {
+    band.addEventListener("pointerdown", (e) => honkAt(e.clientX, e.clientY));
+  }
+  const hbtn = document.getElementById("honk-btn");
+  if (hbtn) {
+    hbtn.addEventListener("click", () => {
+      const r = hbtn.getBoundingClientRect();
+      const n = 3 + ((Math.random() * 3) | 0);
+      for (let i = 0; i < n; i++) {
+        setTimeout(() => honkAt(
+          r.left + r.width / 2 + (Math.random() * 220 - 110),
+          r.top + (Math.random() * 40 - 20)
+        ), i * 110);
+      }
+    });
+  }
+
+  const themeBtn = document.getElementById("theme-toggle");
+  try { if (localStorage.getItem("gd-theme") === "oat") document.documentElement.classList.add("oat"); } catch (_) {}
+  const syncThemeBtn = () => {
+    const light = document.documentElement.classList.contains("oat");
+    themeBtn.textContent = light ? "Dark mode" : "Light mode";
+    themeBtn.setAttribute("aria-pressed", String(light));
+  };
+  syncThemeBtn();
+  themeBtn.addEventListener("click", () => {
+    const light = document.documentElement.classList.toggle("oat");
+    try { localStorage.setItem("gd-theme", light ? "oat" : "ink"); } catch (_) {}
+    syncThemeBtn();
+  });
+
+  console.log("%c Creative Archive %c honk if you're tired ",
+    "background:#CDFF7B;color:#0A0A0A;font-weight:700;padding:4px 6px;border-radius:4px 0 0 4px",
+    "background:#0A0A0A;color:#CDFF7B;padding:4px 6px;border-radius:0 4px 4px 0");
+})();
+</script>
+
+<script>
+/* Wordmark — split into per-letter spans so it can bounce on hover */
+document.querySelectorAll("[data-bounce]").forEach((el) => {
+  const chars = [...el.textContent];
+  el.textContent = "";
+  chars.forEach((ch, i) => {
+    const s = document.createElement("span");
+    s.className = "wm-letter";
+    s.setAttribute("aria-hidden", "true");
+    s.textContent = ch === " " ? " " : ch;
+    s.style.setProperty("--i", i);
+    el.appendChild(s);
+  });
+});
+</script>
+</body>
+</html>

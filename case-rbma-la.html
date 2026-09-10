@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="icon" href="favicon.svg" type="image/svg+xml" />
+<title>Red Bull Music Academy Festival Los Angeles · Grace Danico</title>
+<meta name="description" content="Case study — A suite of hand-drawn surface patterns for Red Bull Music Academy Festival LA, built inside Public-Library's identity and run across billboards, building wraps and digital." />
+<!-- Open Graph / social preview -->
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Grace Danico" />
+<meta property="og:title" content="Red Bull Music Academy Festival Los Angeles · Grace Danico" />
+<meta property="og:description" content="Case study — A suite of hand-drawn surface patterns for Red Bull Music Academy Festival LA, built inside Public-Library&#x27;s identity and run across billboards, building wraps and digital." />
+<meta property="og:url" content="https://gracedanico.com/case-rbma-la.html" />
+<meta property="og:image" content="https://gracedanico.com/About/og-cover.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Grace Danico — pink hair, green bandana, indigo chore coat, on a grey ground" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Red Bull Music Academy Festival Los Angeles · Grace Danico" />
+<meta name="twitter:description" content="Case study — A suite of hand-drawn surface patterns for Red Bull Music Academy Festival LA, built inside Public-Library&#x27;s identity and run across billboards, building wraps and digital." />
+<meta name="twitter:image" content="https://gracedanico.com/About/og-cover.jpg" />
+<meta name="theme-color" content="#0A0A0A" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Martian+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+<script src="https://cdn.tailwindcss.com/3.4.16"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          ink: 'var(--bg)', oat: 'var(--fg)', lichen: 'var(--lichen)',
+          chartreuse: 'var(--chartreuse)', hairline: 'var(--hairline)',
+        },
+        fontFamily: {
+          grotesk: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+          mono:    ['"Martian Mono"', 'ui-monospace', 'monospace'],
+        },
+        maxWidth: { shell: '1280px', wordmark: '1240px' },
+      },
+    },
+  };
+</script>
+
+<style>
+  :root {
+    --bg: #0A0A0A; --fg: #FAF8F5; --lichen: #CDFF7B; --chartreuse: #22C55E;
+    --hairline: rgba(250, 248, 245, 0.12);
+  }
+  html.oat {
+    --bg: #FAF8F5; --fg: #14140F; --lichen: #2F6B00; --chartreuse: #16A34A;
+    --hairline: rgba(20, 20, 15, 0.14);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--fg); }
+  ::selection { background: var(--lichen); color: #0A0A0A; }
+
+  .grain::after {
+    content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 60;
+    opacity: .05; mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation: grain 8s steps(6) infinite;
+  }
+  @keyframes grain {
+    0%,100%{transform:translate(0,0)} 20%{transform:translate(-4%,3%)} 40%{transform:translate(3%,-5%)}
+    60%{transform:translate(-2%,4%)} 80%{transform:translate(5%,2%)}
+  }
+
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--chartreuse); z-index: 70; transition: width .1s linear; }
+
+  .has-cursor, .has-cursor a, .has-cursor button, .has-cursor [data-magnetic] { cursor: none; }
+  #cursor-ring, #cursor-dot {
+    position: fixed; top: 0; left: 0; z-index: 80; pointer-events: none;
+    border-radius: 9999px; transform: translate(-100px,-100px); mix-blend-mode: difference;
+  }
+  #cursor-ring {
+    width: 38px; height: 38px; margin: -19px 0 0 -19px; border: 1px solid #FAF8F5;
+    transition: width .25s cubic-bezier(.16,1,.3,1), height .25s cubic-bezier(.16,1,.3,1),
+                margin .25s cubic-bezier(.16,1,.3,1), background-color .25s;
+  }
+  #cursor-dot { width: 5px; height: 5px; margin: -2.5px 0 0 -2.5px; background: #FAF8F5; }
+  #cursor-ring.is-active { width: 68px; height: 68px; margin: -34px 0 0 -34px; background: rgba(205,255,123,.18); }
+
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .reveal[data-delay="1"] { transition-delay: .08s; }
+  .reveal[data-delay="2"] { transition-delay: .16s; }
+  .reveal[data-delay="3"] { transition-delay: .24s; }
+
+  .surface {
+    position: relative; overflow: hidden;
+    background:
+      radial-gradient(130% 130% at 15% 10%, rgba(205,255,123,.22), transparent 55%),
+      linear-gradient(155deg, #17180f, #0b0c08 62%);
+  }
+  html.oat .surface {
+    background:
+      radial-gradient(130% 130% at 15% 10%, rgba(47,107,0,.20), transparent 55%),
+      linear-gradient(155deg, #ece7dd, #f6f2ea 62%);
+  }
+  .surface::before {
+    content: ""; position: absolute; inset: 0; opacity: .06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+  .surface > .label {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font: 500 12px/1.4 "Martian Mono", monospace; letter-spacing: .28em; text-transform: uppercase;
+    color: color-mix(in srgb, var(--lichen) 70%, transparent); text-align: center; padding: 1rem;
+  }
+
+  .metric-num { font-variant-numeric: tabular-nums; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .grain::after { animation: none; }
+    #cursor-ring, #cursor-dot { display: none; }
+  }
+
+  /* Easter egg — hover the wordmark, the letters bounce */
+  .wm { white-space: pre; }
+  .wm-letter { display: inline-block; will-change: transform; }
+  [data-bounce]:hover .wm-letter {
+    animation: wm-bounce .5s cubic-bezier(.28,.84,.42,1) both;
+    animation-delay: calc(var(--i, 0) * 45ms);
+  }
+  @keyframes wm-bounce {
+    0%   { transform: translateY(0); }
+    35%  { transform: translateY(-0.42em); }
+    60%  { transform: translateY(0.09em); }
+    80%  { transform: translateY(-0.04em); }
+    100% { transform: translateY(0); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-bounce]:hover .wm-letter { animation: none; }
+  }
+</style>
+</head>
+
+<body class="grain font-grotesk antialiased">
+
+<div id="progress"></div>
+<div id="cursor-ring" aria-hidden="true"></div>
+<div id="cursor-dot" aria-hidden="true"></div>
+
+<div class="mx-auto w-full max-w-shell px-6 lg:px-5">
+
+  <!-- Slim header -->
+  <header class="flex h-20 items-center justify-between border-b border-hairline">
+    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-lichen">
+      <!-- saucer logo mark -->
+      <svg class="h-5 w-5 shrink-0 transition-transform duration-500 group-hover:rotate-[24deg]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M7 11q5-7 10 0Z"/>
+        <ellipse cx="12" cy="12.5" rx="10" ry="3"/>
+        <path d="M8.5 16.5l-1.5 4M15.5 16.5l1.5 4M12 17v4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span data-bounce class="wm text-[15px] font-bold tracking-tight">Grace Danico</span>
+    </a>
+    <nav class="flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] sm:gap-7">
+      <a href="index.html#work" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">Work</a>
+      <a href="about.html" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">About</a>
+    </nav>
+  </header>
+
+  <!-- ============================================================
+       PROJECT HEADER
+       ============================================================ -->
+  <header class="grid gap-12 py-16 lg:grid-cols-[1fr_300px] lg:gap-16 lg:py-24">
+    <div>
+      <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-lichen">Case Study · Illustration &amp; Surface Pattern</p>
+      <h1 class="reveal mt-6 text-[clamp(2.6rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.03em]">Red Bull Music Academy Festival Los Angeles</h1>
+      <p class="reveal mt-8 max-w-[48ch] text-[20px] font-medium leading-[1.4] text-oat/70" data-delay="1">A suite of hand-drawn surface patterns for RBMA Festival LA — built to live inside Public-Library's identity system and hold up from a phone screen to a ten-storey building wrap.</p>
+    </div>
+
+    <aside class="reveal self-end" data-delay="2">
+      <dl class="grid grid-cols-2 gap-x-6 gap-y-7 border-t border-hairline pt-7 lg:grid-cols-1">
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Role</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Surface Pattern, Illustration</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Timeline</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">2017</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Client</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Red Bull Music Academy</dd>
+        </div>
+        <div>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Identity by</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Public-Library</dd>
+        </div>
+      </dl>
+    </aside>
+  </header>
+
+  <!-- Hero -->
+  <div class="reveal mb-28 w-full lg:mb-40">
+    <img src="Case%20Studies/010_RBMA/web/rbma-hero.jpg" alt="Ten-storey RBMA Festival LA building wrap in downtown Los Angeles, carrying the black-and-white mark-making surface pattern" width="1800" height="1197" loading="eager"
+         class="aspect-[16/9] w-full rounded-2xl border border-hairline object-cover object-[center_34%] lg:aspect-[21/9]" />
+  </div>
+</div>
+
+<main class="mx-auto max-w-wordmark px-6 lg:px-5">
+
+  <!-- ============================================================
+       01 · THE BRIEF
+       ============================================================ -->
+  <section class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
+    <div class="reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-lichen">01 — The Brief</p>
+      <h2 class="mt-4 text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">One festival, nineteen shows, no single sound.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">RBMA Festival LA ran across most of October 2017 — Ryoji Ikeda scoring a hundred idling cars, SOPHIE's live debut, an Alice Coltrane tribute with Flying Lotus, a night at Hollywood Forever. Public-Library built the identity around &ldquo;the passage of perception&rdquo;; it needed a layer of texture that could hold all of that range without flattening it.</p>
+      <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">My brief: a set of hand-drawn surface patterns that worked at every scale and budget — a billboard on Sunset, a xeroxed handbill, a phone screen in a dark room.</p>
+    </div>
+    <div class="reveal lg:mt-10" data-delay="1">
+      <img src="Case%20Studies/010_RBMA/web/rbma-01.jpg" alt="RBMA Festival LA hoarding along Sunset Boulevard, patterns tiled between the type panels" width="1600" height="1064" loading="lazy"
+           class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover" />
+    </div>
+  </section>
+
+  <!-- ============================================================
+       02 · DISCOVERY
+       ============================================================ -->
+  <section class="mt-28 grid items-start gap-10 lg:mt-40 lg:grid-cols-2 lg:gap-16">
+    <div class="reveal order-2 lg:order-1 lg:mt-10">
+      <img src="Case%20Studies/010_RBMA/web/rbma-02.jpg" alt="Wheatpaste poster wall for RBMA Festival LA, the hand-drawn patterns repeating across every panel" width="1600" height="1064" loading="lazy"
+           class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover" />
+    </div>
+    <div class="reveal order-1 lg:order-2" data-delay="1">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-lichen">02 — Approach</p>
+      <h2 class="mt-4 text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">Many marks, one hand.</h2>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">I drew the patterns by hand — hatching, mazes, confetti, loose scribble — a family of marks Public-Library could pull from for any event artwork or surface, distinct from each other but loose enough to still read as one set when they sat side by side on a wall.</p>
+      <ul class="mt-6 space-y-2 font-mono text-[12px] leading-relaxed text-oat/55">
+        <li>— Hand-drawn, then built as seamless repeats</li>
+        <li>— Tuned to Public-Library's type and color</li>
+        <li>— Tested small (handbill) before large (wrap)</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       03 · DESIGN SYSTEM
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal border-b-2 border-chartreuse pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">03 — The Patterns</span>
+    </div>
+    <p class="reveal mt-8 max-w-[60ch] text-[17px] leading-[1.6] text-oat/70">A set of hand-drawn motifs — hatching, mazes, confetti, swirl — built as seamless repeats and color-matched to the identity, so the cheap flyer and the ten-storey wrap are visibly the same family.</p>
+
+    <div class="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
+      <div class="reveal">
+        <img src="Case%20Studies/010_RBMA/web/rbma-03.jpg" alt="RBMA Festival LA campaign photograph — a pink garment printed with the hand-drawn hatch pattern against blue" width="1052" height="1200" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
+        <h3 class="text-[20px] font-semibold">A family of marks</h3>
+        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">Each pattern its own texture — hatch, maze, confetti, scribble — but all unmistakably drawn by the same hand.</p>
+      </div>
+      <div class="reveal" data-delay="1">
+        <img src="Case%20Studies/010_RBMA/web/rbma-04.jpg" alt="Downtown LA building wrap — the black-and-white zigzag pattern tiling seamlessly across ten storeys" width="1200" height="1200" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
+        <h3 class="text-[20px] font-semibold">Tiling at any size</h3>
+        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">Drawn as true repeats, so a motif holds its rhythm on a handbill and on the side of a building.</p>
+      </div>
+      <div class="reveal" data-delay="2">
+        <img src="Case%20Studies/010_RBMA/web/rbma-05.jpg" alt="RBMA Festival LA billboard with the red maze pattern filling the panels around the artist portrait" width="1037" height="1200" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
+        <h3 class="text-[20px] font-semibold">Across OOH and digital</h3>
+        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">Billboards, wheatpastes, building wraps, social — the patterns are what tie the campaign together.</p>
+      </div>
+    </div>
+
+    <!-- Event artwork — the patterns deployed one per night -->
+    <div class="reveal mt-16 lg:mt-20">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-lichen">In use — a different pattern in every event's artwork</p>
+      <p class="mt-3 max-w-[54ch] text-[15px] leading-[1.6] text-oat/60">Public-Library set each night's poster on one of the patterns — hatch for the punk talk, meander for the studio sessions, whorl for the Alice Coltrane tribute.</p>
+      <div class="mt-7 -mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto px-6 pb-4 lg:mx-0 lg:px-0 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+        <img src="Case%20Studies/010_RBMA/web/rbma-art-alicebag.jpg" alt="Alice Bag event artwork — diagonal hatch pattern in the lower-left block" width="1400" height="787" loading="lazy" class="w-[80vw] max-w-[440px] shrink-0 snap-start rounded-xl border border-hairline sm:w-[440px]" />
+        <img src="Case%20Studies/010_RBMA/web/rbma-art-tierney.jpg" alt="Benjamin Tierney studio-session artwork — meander pattern block" width="1400" height="787" loading="lazy" class="w-[80vw] max-w-[440px] shrink-0 snap-start rounded-xl border border-hairline sm:w-[440px]" />
+        <img src="Case%20Studies/010_RBMA/web/rbma-art-todoesmetal.jpg" alt="Todo Es Metal artwork — red-and-white maze pattern block" width="1400" height="787" loading="lazy" class="w-[80vw] max-w-[440px] shrink-0 snap-start rounded-xl border border-hairline sm:w-[440px]" />
+        <img src="Case%20Studies/010_RBMA/web/rbma-art-coltrane.jpg" alt="Alice Coltrane tribute artwork — concentric whorl pattern block" width="1400" height="787" loading="lazy" class="w-[80vw] max-w-[440px] shrink-0 snap-start rounded-xl border border-hairline sm:w-[440px]" />
+        <img src="Case%20Studies/010_RBMA/web/rbma-art-damfunk.jpg" alt="Dâm-Funk Red Bull Radio artwork — meander pattern block" width="1400" height="787" loading="lazy" class="w-[80vw] max-w-[440px] shrink-0 snap-start rounded-xl border border-hairline sm:w-[440px]" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       04 · RESULTS
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40">
+    <div class="reveal border-b-2 border-chartreuse pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">04 — Results</span>
+    </div>
+
+    <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-4">
+      <div class="reveal">
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="6" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Hand-drawn patterns in the suite</p>
+      </div>
+      <div class="reveal" data-delay="1">
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="19" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Festival events under one visual identity</p>
+      </div>
+      <div class="reveal" data-delay="2">
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="25" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Days of programming — October 6&ndash;30, 2017</p>
+      </div>
+      <div class="reveal" data-delay="3">
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="100" data-suffix="%">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Hand-drawn source art — every mark original</p>
+      </div>
+    </div>
+
+    <div class="reveal mt-20 grid gap-10 lg:grid-cols-2 lg:gap-16">
+      <p class="text-[18px] leading-[1.6] text-oat/75">The patterns carried a month of programming across LA and never once fought the type. Getting to sit that quietly inside someone else's system is its own kind of result.</p>
+      <img src="Case%20Studies/010_RBMA/web/rbma-final.jpg" alt="RBMA Festival LA building wrap on Melrose Avenue, patterns anchoring the full campaign lockup" width="1600" height="1064" loading="lazy" class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover" />
+    </div>
+  </section>
+</main>
+
+<!-- Next project -->
+<a href="case-laac.html" data-magnetic
+   class="group mt-32 block border-t border-hairline transition-colors duration-500 hover:bg-lichen">
+  <div class="mx-auto flex max-w-wordmark items-center justify-between gap-6 px-6 py-16 lg:px-5 lg:py-24">
+    <div>
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-oat/50 transition-colors group-hover:text-[#0A0A0A]/60">Next Project</p>
+      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-[#0A0A0A]">Los Angeles Archivists Collective</h2>
+    </div>
+    <span class="shrink-0 text-4xl text-lichen transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0A0A0A] lg:text-6xl">↗</span>
+  </div>
+</a>
+
+<footer class="mx-auto max-w-wordmark px-6 py-10 lg:px-5">
+  <div class="flex flex-col gap-4 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:justify-between">
+    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/45">© <span id="year">2026</span> Grace Danico</p>
+    <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em]">
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="mailto:hello@gracedanico.com">Email</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
+      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
+      <button id="theme-toggle" data-magnetic type="button" aria-pressed="false"
+              class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/50 transition-colors hover:text-lichen sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
+        Light mode
+      </button>
+    </nav>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const finePointer  = matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  const bar = document.getElementById("progress");
+  const onScroll = () => {
+    const h = document.documentElement;
+    const max = h.scrollHeight - h.clientHeight;
+    bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + "%";
+  };
+  addEventListener("scroll", onScroll, { passive: true }); onScroll();
+
+  const ring = document.getElementById("cursor-ring");
+  const dot  = document.getElementById("cursor-dot");
+  if (finePointer && !reduceMotion) {
+    document.documentElement.classList.add("has-cursor");
+    let mx = innerWidth/2, my = innerHeight/2, rx = mx, ry = my;
+    addEventListener("pointermove", (e) => {
+      mx = e.clientX; my = e.clientY;
+      dot.style.transform = `translate(${mx}px, ${my}px)`;
+    }, { passive: true });
+    (function loop(){ rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+      ring.style.transform = `translate(${rx}px, ${ry}px)`; requestAnimationFrame(loop); })();
+    const grow = () => ring.classList.add("is-active");
+    const shrink = () => ring.classList.remove("is-active");
+    document.querySelectorAll('a, button, [data-magnetic]').forEach((el) => {
+      el.addEventListener("pointerenter", grow);
+      el.addEventListener("pointerleave", shrink);
+    });
+  }
+
+  if (finePointer && !reduceMotion) {
+    document.querySelectorAll("[data-magnetic]").forEach((el) => {
+      el.style.transition = "transform .35s cubic-bezier(.16,1,.3,1)";
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const x = e.clientX - r.left - r.width/2;
+        const y = e.clientY - r.top - r.height/2;
+        el.style.transform = `translate(${x*0.22}px, ${y*0.22}px)`;
+      });
+      el.addEventListener("pointerleave", () => { el.style.transform = ""; });
+    });
+  }
+
+  const runCount = (el) => {
+    const target = parseFloat(el.dataset.count);
+    const suffix = el.dataset.suffix || "";
+    if (reduceMotion || isNaN(target)) { el.textContent = (isNaN(target) ? "" : target) + suffix; return; }
+    const dur = 1400; const start = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - start) / dur);
+      const eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * eased) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  };
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((en) => {
+      if (!en.isIntersecting) return;
+      en.target.classList.add("in");
+      en.target.querySelectorAll?.("[data-count]").forEach(runCount);
+      io.unobserve(en.target);
+    });
+  }, { threshold: 0.15, rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
+
+  const themeBtn = document.getElementById("theme-toggle");
+  try { if (localStorage.getItem("gd-theme") === "oat") document.documentElement.classList.add("oat"); } catch (_) {}
+  const syncThemeBtn = () => {
+    const light = document.documentElement.classList.contains("oat");
+    themeBtn.textContent = light ? "Dark mode" : "Light mode";
+    themeBtn.setAttribute("aria-pressed", String(light));
+  };
+  syncThemeBtn();
+  themeBtn.addEventListener("click", () => {
+    const light = document.documentElement.classList.toggle("oat");
+    try { localStorage.setItem("gd-theme", light ? "oat" : "ink"); } catch (_) {}
+    syncThemeBtn();
+  });
+
+  console.log("%c Red Bull Music Academy Festival Los Angeles %c case study ",
+    "background:#CDFF7B;color:#0A0A0A;font-weight:700;padding:4px 6px;border-radius:4px 0 0 4px",
+    "background:#0A0A0A;color:#CDFF7B;padding:4px 6px;border-radius:0 4px 4px 0");
+})();
+</script>
+
+<script>
+/* Wordmark — split into per-letter spans so it can bounce on hover */
+document.querySelectorAll("[data-bounce]").forEach((el) => {
+  const chars = [...el.textContent];
+  el.textContent = "";
+  chars.forEach((ch, i) => {
+    const s = document.createElement("span");
+    s.className = "wm-letter";
+    s.setAttribute("aria-hidden", "true");
+    s.textContent = ch === " " ? " " : ch;
+    s.style.setProperty("--i", i);
+    el.appendChild(s);
+  });
+});
+</script>
+</body>
+</html>
