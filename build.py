@@ -14,7 +14,7 @@ import os, re, html, urllib.parse, shutil, sys
 
 SRC = os.path.dirname(os.path.abspath(__file__))
 DST = os.path.join(os.path.dirname(SRC), "portfolio")
-DOMAIN = "gracedanico.com"
+DOMAIN = "www.gracedanico.com"
 
 ATTR = re.compile(r'(?:src|href|poster|data-src|srcset)="([^"]+)"')
 
