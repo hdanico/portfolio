@@ -41,10 +41,10 @@
         colors: {
           // Palette is driven by CSS variables so the alt-theme easter egg
           // can repaint the whole page in one class toggle.
-          ink:        'var(--bg)',
-          oat:        'var(--fg)',
-          lichen:     'var(--lichen)',
-          chartreuse: 'var(--chartreuse)',
+          background: 'var(--bg)',       // Background
+          foreground: 'var(--fg)',       // Text
+          accent:     'var(--accent)',   // Primary Accent
+          accent2:    'var(--accent-2)', // Secondary Accent
           hairline:   'var(--hairline)',
         },
         fontFamily: {
@@ -58,27 +58,38 @@
 </script>
 
 <style>
-  /* ---------- Design tokens ---------- */
+  /* ---------- Design tokens ----------
+     Values are the Portfolio Figma file's semantic styles:
+     Background / Primary Accent / Secondary Accent / Tertiary Accent / Text.
+     --accent is Primary, --accent-2 Secondary, --spark-2 Tertiary.
+     Light Primary is a darkened Electric Persimmon: the system's #FF5C28
+     is only 2.7:1 on #F2EEF8, which fails AA everywhere it is used as
+     text. #B23A08 holds the hue at 5.2:1. */
   :root {
-    --bg:         #0A0A0A;  /* Near black          */
-    --fg:         #FAF8F5;  /* Oat                 */
-    --lichen:     #CDFF7B;  /* Chartreuse / lichen */
-    --chartreuse: #22C55E;  /* Border green        */
-    --hairline:   rgba(250, 248, 245, 0.12);
+    --bg:         #0A0A0A;  /* Background · dark */
+    --fg:         #FAF8F5;  /* Text       · dark */
+    --accent:     #CDFF7B;  /* Primary    · dark */
+    --accent-2:   #EBB0FF;  /* Secondary  · dark */
+    --hairline:   rgba(250, 248, 245, 0.12);  /* Text @ 12% */
+    --spark:      #CDFF7B;  /* Primary  — sparkle core */
+    --spark-2:    #8B5CF6;  /* Tertiary — sparkle edge */
   }
   /* Light mode — toggled from the footer */
-  html.oat {
-    --bg:         #FAF8F5;
-    --fg:         #14140F;
-    --lichen:     #2F6B00;
-    --chartreuse: #16A34A;
-    --hairline:   rgba(20, 20, 15, 0.14);
+  /* Light mode — toggled from the footer. Same five roles, light column. */
+  html.light {
+    --bg:         #F2EEF8;  /* Background · light */
+    --fg:         #0A0A0A;  /* Text       · light */
+    --accent:     #B23A08;  /* Primary    · light — Persimmon, darkened for AA */
+    --accent-2:   #582C2C;  /* Secondary  · light — Brownie */
+    --hairline:   rgba(10, 10, 10, 0.14);  /* Text @ 14% */
+    --spark:      #B23A08;  /* Primary  · light */
+    --spark-2:    #0088FF;  /* Tertiary · light — the SVGs' own fringe colour */
   }
 
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--fg); }
 
-  ::selection { background: var(--lichen); color: #0A0A0A; }
+  ::selection { background: var(--accent); color: var(--bg); }
 
   /* ---------- Film-grain overlay ---------- */
   .grain::after {
@@ -97,7 +108,7 @@
   /* ---------- Scroll progress ---------- */
   #progress {
     position: fixed; top: 0; left: 0; height: 2px; width: 0%;
-    background: var(--chartreuse); z-index: 70; transition: width .1s linear;
+    background: var(--accent-2); z-index: 70; transition: width .1s linear;
   }
 
   /* ---------- Magnetic cursor ---------- */
@@ -124,6 +135,122 @@
   .reveal { opacity: 0; transform: translateY(22px); transition: opacity .8s cubic-bezier(.16,1,.3,1), transform .8s cubic-bezier(.16,1,.3,1); }
   .reveal.in { opacity: 1; transform: none; }
 
+  /* ============================================================
+     BIO SPARKLE FIELD
+     Three hand-drawn starburst frames (Landing Page/sparkle-0*.svg)
+     cycled as a ~7fps "boil". 01 and 03 are vertical mirrors, 02 is
+     a rotated variant, so the loop rocks rather than spins.
+
+     Each frame is a CSS mask, not an <img>, so one file paints in
+     whichever accent the current theme is using. The mask rasterises
+     once per frame file; every animation after that is transform or
+     opacity, so the whole field stays on the compositor.
+
+     Layers, outermost in:
+       .sparkle-field  entrance fade + clipping box
+       .sparkle-drift  scroll / pointer parallax (set from JS)
+       .spark          position + rotation, written per frame from JS
+       .spark-pulse    breathing scale + opacity
+       .sf             one of the three frames, opacity-cycled
+
+     Travel is a DVD-logo bounce: each burst holds a constant velocity and
+     spin and reflects off the field edges, so the paths cross and never
+     repeat. That has to be JS — a reflection depends on where the burst
+     actually is, which CSS keyframes cannot know. .spark therefore owns
+     `transform` outright and the breathing scale moved down to
+     .spark-pulse so the two never write the same property.
+     ============================================================ */
+  .sparkle-field {
+    position: absolute;
+    /* Stops just under the header rule; bleeds down into the gap
+       before "Selected Work" so nothing is cut off mid-burst. */
+    inset: -1.5rem -1.5rem -4.5rem;
+    z-index: -1;
+    overflow: hidden;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 1.4s cubic-bezier(.16,1,.3,1);
+  }
+  .sparkle-field.in { opacity: 1; }
+  .sparkle-drift { position: absolute; inset: 0; will-change: transform; }
+
+  .spark {
+    position: absolute;
+    left: 0; top: 0;
+    width: var(--size);
+    aspect-ratio: 1130 / 840;
+    /* 0 0 keeps the JS matrix honest: the trailing translate(-50%,-50%)
+       does the centring, so rotate() turns about the burst's own middle. */
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+  .spark-pulse {
+    position: absolute; inset: 0;
+    will-change: transform, opacity;
+    animation: spark-breathe var(--pulse, 11s) cubic-bezier(.45,0,.55,1) var(--delay, 0s) infinite;
+  }
+  /* Soft halo under each burst — reads as light rather than flat paint.
+     Deliberately outside .spark-spin: a glow shouldn't rotate. */
+  .spark::before {
+    content: "";
+    position: absolute; inset: 16%;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--spark) 0%, transparent 74%);
+    opacity: var(--glow, .20);
+  }
+  /* Oat mode subtracts light from the page instead of adding it, so the
+     same alpha costs more body-copy contrast — carry ~85% of it. */
+  html.light .spark { --op-k: .85; }
+  html.light .spark::before { opacity: calc(var(--glow, .20) * .6); }
+
+
+  .sf {
+    position: absolute; inset: 0;
+    opacity: 0;
+    background: linear-gradient(140deg, var(--spark) 0%, var(--spark-2) 95%);
+    -webkit-mask: var(--src) center / contain no-repeat;
+            mask: var(--src) center / contain no-repeat;
+    animation-duration: var(--frame, .45s);
+    animation-iteration-count: infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  .sf-1 { --src: url("Landing%20Page/sparkle-01.svg"); animation-name: sf-1; }
+  .sf-2 { --src: url("Landing%20Page/sparkle-02.svg"); animation-name: sf-2; }
+  .sf-3 { --src: url("Landing%20Page/sparkle-03.svg"); animation-name: sf-3; }
+
+  /* Hard cuts — no cross-fade, so it reads as drawn frames, not a morph. */
+  @keyframes sf-1 { 0%, 33.32% { opacity: 1 } 33.33%, 100%   { opacity: 0 } }
+  @keyframes sf-2 { 0%, 33.32% { opacity: 0 } 33.33%, 66.65% { opacity: 1 } 66.66%, 100% { opacity: 0 } }
+  @keyframes sf-3 { 0%, 66.65% { opacity: 0 } 66.66%, 100%   { opacity: 1 } }
+
+  @keyframes spark-breathe {
+    0%, 100% { transform: scale(.86); opacity: calc(var(--op) * var(--op-k, 1) * .55); }
+    50%      { transform: scale(1.06); opacity: calc(var(--op) * var(--op-k, 1)); }
+  }
+
+  /* Idle offscreen — nothing animates until the section is in view. */
+  .sparkle-field:not(.live) .spark-pulse,
+  .sparkle-field:not(.live) .sf { animation-play-state: paused; }
+
+  /* Stacked mobile layout turns this section into a ~1500px column, which
+     would strand the bursts hundreds of pixels apart. Cap the field to the
+     top of the section instead and drop two of the six, so it reads as a
+     cluster above the copy and the long read sits on plain ground. */
+  @media (max-width: 767px) {
+    .sparkle-field { inset: -1rem -1rem auto; height: 62%; }
+    .spark.wide-only { display: none; }
+  }
+
+  /* Reduced motion keeps the scatter but not the travel: JS places each
+     burst once and never starts the loop. Visibility still comes from .in
+     so nothing piles up at the origin before that first placement. */
+  @media (prefers-reduced-motion: reduce) {
+    .sparkle-field { transition: none; }
+    .spark-pulse, .sf { animation: none; }
+    .spark-pulse { opacity: calc(var(--op) * var(--op-k, 1) * .7); }
+    .sf-1 { opacity: 1; }
+  }
+
   /* ---------- Work card media ---------- */
   .card-media {
     background:
@@ -131,10 +258,10 @@
       linear-gradient(150deg, #16170f, #0c0d09 60%);
     position: relative; overflow: hidden;
   }
-  html.oat .card-media {
+  html.light .card-media {
     background:
-      radial-gradient(120% 120% at 20% 10%, rgba(47,107,0,.20), transparent 55%),
-      linear-gradient(150deg, #ece7dd, #f6f2ea 60%);
+      radial-gradient(120% 120% at 20% 10%, rgba(255,92,40,.20), transparent 55%),
+      linear-gradient(150deg, #e4deed, #ede8f4 60%);
   }
   .card-media::before {
     content: ""; position: absolute; inset: 0;
@@ -178,7 +305,7 @@
   #jollibee-gif {
     position: fixed; left: 0; top: 0;
     width: clamp(120px, 15vw, 168px); height: auto;
-    border: 2px solid var(--chartreuse); border-radius: 8px;
+    border: 2px solid var(--accent-2); border-radius: 8px;
     box-shadow: 0 24px 60px -14px rgba(0, 0, 0, .7);
     opacity: 0; pointer-events: none; z-index: 90;
     transition: opacity .3s ease; will-change: transform;
@@ -187,7 +314,7 @@
 </style>
 </head>
 
-<body class="grain font-grotesk antialiased selection:bg-lichen">
+<body class="grain font-grotesk antialiased selection:bg-accent">
 
 <div id="progress"></div>
 <div id="cursor-ring" aria-hidden="true"></div>
@@ -202,7 +329,7 @@
 
     <!-- Wordmark + role tag -->
     <div class="flex items-center gap-4 md:gap-5">
-      <a href="index.html" id="wordmark" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-lichen">
+      <a href="index.html" id="wordmark" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-accent">
         <!-- saucer logo mark -->
         <svg class="h-6 w-6 shrink-0 transition-transform duration-500 group-hover:rotate-[24deg]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
           <path d="M7 11q5-7 10 0Z"/>
@@ -213,15 +340,15 @@
         <span data-bounce class="wm text-[27px] font-bold leading-none tracking-[-0.02em]">Grace Danico</span>
       </a>
       <span class="hidden h-4 w-px bg-hairline md:inline-block"></span>
-      <p class="hidden font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-oat/40 md:block">
+      <p class="hidden font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-foreground/40 md:block">
         Creative Director • Los Angeles, CA
       </p>
     </div>
 
     <!-- Nav -->
     <nav class="flex items-center gap-5 font-mono text-[10px] font-medium uppercase tracking-[0.22em] sm:gap-7">
-      <a href="index.html#work" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">Work</a>
-      <a href="about.html" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">About</a>
+      <a href="index.html#work" data-magnetic class="text-foreground/60 transition-colors hover:text-accent">Work</a>
+      <a href="about.html" data-magnetic class="text-foreground/60 transition-colors hover:text-accent">About</a>
     </nav>
   </header>
 
@@ -230,20 +357,71 @@
     <!-- ============================================================
          2 · INTRO   (max 1244px wide · ~252px tall on desktop)
          ============================================================ -->
-    <section class="mx-auto max-w-[1244px] py-20 lg:min-h-[252px] lg:pb-20 lg:pt-14">
+    <section class="relative isolate mx-auto max-w-[1244px] py-20 lg:min-h-[252px] lg:pb-20 lg:pt-14">
+
+      <!-- Sparkle field · the three hand-drawn starburst frames, cycled and
+           bouncing behind the bio. Split across two parallax layers so the
+           big slow shapes sit back and the small quick ones ride in front.
+           --x/--y are only the starting centre (% of the field); after that
+           the walker in the script owns position. --speed is px/s, --angle
+           the initial heading in degrees, --spin-rate deg/s (sign = which
+           way it turns). Decorative only. -->
+      <div id="bio-sparkles" class="sparkle-field" aria-hidden="true">
+        <div class="sparkle-drift" data-depth=".45">
+            <div class="spark"
+                 style="--x:17%; --y:32%; --size:clamp(250px,31vw,450px); --op:.12;
+                        --speed:46; --angle:27; --spin-rate:-5.5;
+                        --pulse:15s; --frame:.48s; --delay:0s; --tilt:-8">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+            <div class="spark"
+                 style="--x:70%; --y:74%; --size:clamp(185px,21vw,320px); --op:.12;
+                        --speed:54; --angle:153; --spin-rate:7.0;
+                        --pulse:13s; --frame:.45s; --delay:-6.1s; --tilt:10">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+            <div class="spark wide-only"
+                 style="--x:44%; --y:90%; --size:clamp(150px,17vw,250px); --op:.13;
+                        --speed:61; --angle:291; --spin-rate:-8.5;
+                        --pulse:11s; --frame:.39s; --delay:-3.4s; --tilt:6">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+        </div>
+        <div class="sparkle-drift" data-depth="1.5">
+            <div class="spark"
+                 style="--x:88%; --y:21%; --size:clamp(105px,12vw,168px); --op:.22;
+                        --speed:72; --angle:214; --spin-rate:11.5;
+                        --pulse:8s; --frame:.33s; --delay:-1.7s; --tilt:-4">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+            <div class="spark"
+                 style="--x:2%; --y:84%; --size:clamp(80px,9vw,126px); --op:.20;
+                        --speed:67; --angle:338; --spin-rate:-13.0;
+                        --pulse:9s; --frame:.36s; --delay:-2.6s; --tilt:14">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+            <div class="spark wide-only"
+                 style="--x:33%; --y:14%; --size:clamp(66px,8vw,106px); --op:.24;
+                        --speed:79; --angle:108; --spin-rate:9.5;
+                        --pulse:7s; --frame:.30s; --delay:-4.8s; --tilt:0">
+              <div class="spark-pulse"><i class="sf sf-1"></i><i class="sf sf-2"></i><i class="sf sf-3"></i></div>
+            </div>
+        </div>
+      </div>
+
       <div class="flex h-full flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
 
-        <!-- Description · 713px · Space Grotesk 22px bold · lichen -->
+        <!-- Description · 713px · Space Grotesk 22px · accent name -->
         <div class="reveal w-full max-w-[713px]">
-          <p class="text-[22px] font-bold leading-[1.35] text-lichen">
-            Grace Danico is a <span data-bounce role="text" aria-label="Filipino-American" class="jollibee wm">Filipino-American</span> creative director, archivist, and DJ
+          <p class="text-[22px] font-normal leading-[1.35] text-foreground">
+            <span class="font-bold text-accent">Grace Danico</span> is a <span data-bounce role="text" aria-label="Filipino-American" class="jollibee wm">Filipino-American</span> creative director, archivist, and DJ
             who has shaped visual systems for billions at Meta and stewarded the global
             illustration community as an executive board leader for ICON. Operating at the
             intersection of brand architecture, editorial craft, and visual history, she
             builds scalable creative worlds informed by an archivist's eye and a DJ's ear.
           </p>
           <a href="about.html" data-magnetic
-             class="group mt-8 inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-oat/70 transition-colors hover:text-lichen">
+             class="group mt-8 inline-flex items-center gap-2 font-mono text-[11px] font-medium uppercase tracking-[0.22em] text-foreground/70 transition-colors hover:text-accent">
             Read more
             <span class="transition-transform duration-300 group-hover:translate-x-1">↗</span>
           </a>
@@ -252,10 +430,10 @@
         <!-- Services + Clients · 374px · gap 48px -->
         <div class="reveal grid w-full max-w-[374px] grid-cols-2 gap-x-12 gap-y-8">
           <div>
-            <h2 class="font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-oat/45">
+            <h2 class="font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-foreground/45">
               Services
             </h2>
-            <ul class="mt-4 space-y-1.5 text-[14px] leading-[1.5] text-oat/90">
+            <ul class="mt-4 space-y-1.5 text-[14px] leading-[1.5] text-foreground/90">
               <li>Creative Direction</li>
               <li>Design Direction</li>
               <li>Art Direction</li>
@@ -268,10 +446,10 @@
             </ul>
           </div>
           <div>
-            <h2 class="font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-oat/45">
+            <h2 class="font-mono text-[10px] font-medium uppercase leading-[12px] tracking-[0.22em] text-foreground/45">
               Selected Clients
             </h2>
-            <ul class="mt-4 space-y-1.5 text-[14px] leading-[1.5] text-oat/90">
+            <ul class="mt-4 space-y-1.5 text-[14px] leading-[1.5] text-foreground/90">
               <li>Meta</li>
               <li>Google</li>
               <li>Dropbox</li>
@@ -293,9 +471,9 @@
     <section id="work" class="mx-auto max-w-[1241px] pb-32 pt-16">
 
       <!-- Section pill header -->
-      <div class="reveal mb-16 flex items-end justify-between border-b-2 border-chartreuse pb-3 lg:mb-20">
-        <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">Selected Work</span>
-        <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">9 / Projects</span>
+      <div class="reveal mb-16 flex items-end justify-between border-b-2 border-accent pb-3 lg:mb-20">
+        <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">Selected Work</span>
+        <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">9 / Projects</span>
       </div>
 
       <!-- Work grid · 12-col · descending emphasis 2 / 3 / 4 -->
@@ -311,9 +489,9 @@
             <div class="mt-5 flex items-start justify-between gap-4">
               <div>
                 <h3 class="text-[28px] font-semibold leading-[1.05] tracking-[-0.01em] lg:text-[32px]">Forum App</h3>
-                <p class="mt-2 font-mono text-[11px] leading-[1.5] text-oat/50">Meta — Brand System &amp; Strategy</p>
+                <p class="mt-2 font-mono text-[11px] leading-[1.5] text-foreground/50">Meta — Brand System &amp; Strategy</p>
               </div>
-              <span class="arrow shrink-0 pt-1.5 text-xl text-lichen opacity-40">↗</span>
+              <span class="arrow shrink-0 pt-1.5 text-xl text-accent opacity-40">↗</span>
             </div>
           </a>
         </article>
@@ -326,9 +504,9 @@
             <div class="mt-5 flex items-start justify-between gap-4">
               <div>
                 <h3 class="text-[28px] font-semibold leading-[1.05] tracking-[-0.01em] lg:text-[32px]">Facebook Marketplace</h3>
-                <p class="mt-2 font-mono text-[11px] leading-[1.5] text-oat/50">Holiday — Creative Direction</p>
+                <p class="mt-2 font-mono text-[11px] leading-[1.5] text-foreground/50">Holiday — Creative Direction</p>
               </div>
-              <span class="arrow shrink-0 pt-1.5 text-xl text-lichen opacity-40">↗</span>
+              <span class="arrow shrink-0 pt-1.5 text-xl text-accent opacity-40">↗</span>
             </div>
           </a>
         </article>
@@ -343,9 +521,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[24px] font-semibold leading-tight">Bloom &amp; Plume Coffee</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Brand Systems &amp; Strategy</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Brand Systems &amp; Strategy</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -358,9 +536,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[24px] font-semibold leading-tight">Los Angeles Archivists Collective</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Brand Systems &amp; Strategy</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Brand Systems &amp; Strategy</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -373,9 +551,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[24px] font-semibold leading-tight">Facebook Groups</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Facebook — Creative Direction</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Facebook — Creative Direction</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -390,9 +568,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[20px] font-semibold leading-tight">Red Bull Music Academy Festival Los Angeles</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Surface Pattern · Illustration</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Surface Pattern · Illustration</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -405,9 +583,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[20px] font-semibold leading-tight">Pabst Blue Ribbon Sound Society</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Mural &amp; Illustration</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Mural &amp; Illustration</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -420,9 +598,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[20px] font-semibold leading-tight">101 Best California Experiences</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Illustration &amp; Lettering</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Illustration &amp; Lettering</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -435,9 +613,9 @@
             <div class="mt-4 flex items-start justify-between gap-3">
               <div>
                 <h3 class="text-[20px] font-semibold leading-tight">Creative Archive</h3>
-                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-oat/50">Illustration, Lettering, Design</p>
+                <p class="mt-1.5 font-mono text-[11px] leading-[1.5] text-foreground/50">Illustration, Lettering, Design</p>
               </div>
-              <span class="arrow shrink-0 pt-1 text-lichen opacity-0">↗</span>
+              <span class="arrow shrink-0 pt-1 text-accent opacity-0">↗</span>
             </div>
           </a>
         </article>
@@ -449,88 +627,88 @@
          ============================================================ -->
     <section id="recognition" class="mx-auto max-w-[1241px] pb-28">
 
-      <div class="reveal mb-12 border-b-2 border-chartreuse pb-3">
-        <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">Industry Recognition</span>
+      <div class="reveal mb-12 border-b-2 border-accent pb-3">
+        <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">Industry Recognition</span>
       </div>
 
       <!-- Juries & Awards -->
-      <h3 class="reveal font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-oat/45">Juries &amp; Awards</h3>
+      <h3 class="reveal font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-foreground/45">Juries &amp; Awards</h3>
       <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
 
         <article class="reveal border-t border-hairline pt-5" data-magnetic>
           <h4 class="text-[22px] font-semibold leading-tight">ICON: The Illustration Conference</h4>
-          <p class="mt-2 text-[16px] leading-snug text-oat/70">Co-Vice President / Treasurer</p>
-          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">2018–2024</p>
+          <p class="mt-2 text-[16px] leading-snug text-foreground/70">Co-Vice President / Treasurer</p>
+          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">2018–2024</p>
         </article>
 
         <article class="reveal border-t border-hairline pt-5" data-magnetic>
           <h4 class="text-[22px] font-semibold leading-tight">Society of Publication Designers</h4>
-          <p class="mt-2 text-[16px] leading-snug text-oat/70">Illustrations Portfolio Review</p>
-          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Reviewer, 2023</p>
+          <p class="mt-2 text-[16px] leading-snug text-foreground/70">Illustrations Portfolio Review</p>
+          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Reviewer, 2023</p>
         </article>
 
         <article class="reveal border-t border-hairline pt-5" data-magnetic>
           <h4 class="text-[22px] font-semibold leading-tight">Society of Illustrators (NYC)</h4>
-          <p class="mt-2 text-[16px] leading-snug text-oat/70">Illustrators 62 Jury</p>
-          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Uncommissioned category, 2019</p>
+          <p class="mt-2 text-[16px] leading-snug text-foreground/70">Illustrators 62 Jury</p>
+          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Uncommissioned category, 2019</p>
         </article>
 
         <article class="reveal border-t border-hairline pt-5" data-magnetic>
           <h4 class="text-[22px] font-semibold leading-tight">American Illustration</h4>
-          <p class="mt-2 text-[16px] leading-snug text-oat/70">Illustrators 40</p>
-          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Selected winner, 2021</p>
+          <p class="mt-2 text-[16px] leading-snug text-foreground/70">Illustrators 40</p>
+          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Selected winner, 2021</p>
         </article>
 
         <article class="reveal border-t border-hairline pt-5" data-magnetic>
           <h4 class="text-[22px] font-semibold leading-tight">Society of Illustrators</h4>
-          <p class="mt-2 text-[16px] leading-snug text-oat/70">Illustrators 63</p>
-          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Selected winner, 2021</p>
+          <p class="mt-2 text-[16px] leading-snug text-foreground/70">Illustrators 63</p>
+          <p class="mt-3 font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Selected winner, 2021</p>
         </article>
       </div>
 
       <!-- Lectures & Workshops -->
-      <h3 class="reveal mt-20 font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-oat/45">Lectures &amp; Workshops</h3>
+      <h3 class="reveal mt-20 font-mono text-[10px] font-medium uppercase tracking-[0.2em] text-foreground/45">Lectures &amp; Workshops</h3>
       <div class="mt-6 divide-y divide-hairline">
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2026</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2026</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>5 Things I Learned By Being A DJ</em>, Product Creative Community @ Facebook</li>
           </ul>
         </div>
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2024</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2024</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>It's OK to Not Be OK: Mental Health Realness</em>, ICON12: Mainstage, Minneapolis, MN — panel host</li>
             <li><em>Be Your Own Archivist: A How-to Guide</em>, ICON12, Minneapolis, MN</li>
           </ul>
         </div>
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2023</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2023</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>Love Is The Message: Disco as Revolution and Form of Self-Expression</em>, Inspired By Lecture Series @ Meta</li>
           </ul>
         </div>
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2020</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2020</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>Creating Diversity and Inclusivity Through Outreach and Collaboration</em>, ARCHIVES✻RECORDS 2020, Society of American Archivists</li>
           </ul>
         </div>
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2019</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2019</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>Designing for Music</em>, UCRN at KXLU, Loyola Marymount University, Los Angeles, CA</li>
           </ul>
         </div>
 
         <div class="reveal grid gap-x-8 gap-y-3 py-6 sm:grid-cols-[64px_1fr]">
-          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-lichen">2018</p>
-          <ul class="space-y-2 text-[15px] leading-snug text-oat/80">
+          <p class="font-mono text-[11px] uppercase tracking-[0.16em] text-accent">2018</p>
+          <ul class="space-y-2 text-[15px] leading-snug text-foreground/80">
             <li><em>Be Your Own Archivist: A How-to Guide</em>, ICON10, Detroit, MI</li>
             <li><em>Exclusion By Design</em>, AIGA Detroit, Detroit, MI</li>
             <li><em>ZineFest</em>, UCI, Irvine, CA</li>
@@ -547,21 +725,21 @@
        ============================================================ -->
   <footer class="mx-auto max-w-wordmark border-t border-hairline py-10">
     <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-      <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/45">
+      <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/45">
         © <span id="year">2026</span> Grace Danico
       </p>
       <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em]">
-        <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="mailto:hello@gracedanico.com">Email</a>
-        <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
-        <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
-        <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
+        <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="mailto:hello@gracedanico.com">Email</a>
+        <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
+        <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
+        <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
         <button id="theme-toggle" data-magnetic type="button" aria-pressed="false"
-                class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/50 transition-colors hover:text-lichen sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
+                class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50 transition-colors hover:text-accent sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
           Light mode
         </button>
       </nav>
     </div>
-    <p class="mt-6 font-mono text-[10px] leading-relaxed tracking-[0.06em] text-oat/25">
+    <p class="mt-6 font-mono text-[10px] leading-relaxed tracking-[0.06em] text-foreground/25">
       psst — my name likes attention.
     </p>
   </footer>
@@ -641,21 +819,153 @@
   /* ---------- 6 · Light / dark mode (footer toggle) ---------- */
   const themeBtn = document.getElementById("theme-toggle");
   try {
-    if (localStorage.getItem("gd-theme") === "oat") document.documentElement.classList.add("oat");
+    const saved = localStorage.getItem("gd-theme");
+    if (saved === "light" || saved === "oat") document.documentElement.classList.add("light");
   } catch (_) {}
   const syncThemeBtn = () => {
-    const light = document.documentElement.classList.contains("oat");
+    const light = document.documentElement.classList.contains("light");
     themeBtn.textContent = light ? "Dark mode" : "Light mode";
     themeBtn.setAttribute("aria-pressed", String(light));
   };
   syncThemeBtn();
   themeBtn.addEventListener("click", () => {
-    const light = document.documentElement.classList.toggle("oat");
-    try { localStorage.setItem("gd-theme", light ? "oat" : "ink"); } catch (_) {}
+    const light = document.documentElement.classList.toggle("light");
+    try { localStorage.setItem("gd-theme", light ? "light" : "dark"); } catch (_) {}
     syncThemeBtn();
   });
 
-  /* ---------- 7 · Console note ---------- */
+  /* ---------- 7 · Bio sparkle field ---------- */
+  const field = document.getElementById("bio-sparkles");
+  if (field) {
+    const layers = [...field.querySelectorAll(".sparkle-drift")].map((el) => ({
+      el, depth: parseFloat(el.dataset.depth) || 1,
+    }));
+
+    // Every burst holds a constant velocity and spin and reflects off the
+    // field edges — a slow DVD-logo bounce. Bounds are inset by 0.35 of the
+    // burst so it drifts partway off before turning back, rather than
+    // visibly kissing an invisible wall.
+    const BLEED = 0.35;
+    const sparks = [...field.querySelectorAll(".spark")].map((el) => {
+      const cs  = getComputedStyle(el);
+      const num = (prop, fallback) => {
+        const v = parseFloat(cs.getPropertyValue(prop));
+        return Number.isFinite(v) ? v : fallback;
+      };
+      const heading = num("--angle", 0) * Math.PI / 180;
+      const speed   = num("--speed", 50);
+      return {
+        el,
+        startX: num("--x", 50) / 100,   // fractions of the field box
+        startY: num("--y", 50) / 100,
+        vx: Math.cos(heading) * speed,
+        vy: Math.sin(heading) * speed,
+        vr: num("--spin-rate", 0),
+        r:  num("--tilt", 0),
+        x: 0, y: 0, w: 0, h: 0, minX: 0, maxX: 0, minY: 0, maxY: 0,
+      };
+    });
+
+    const paint = (s) =>
+      s.el.style.transform =
+        `translate3d(${s.x.toFixed(2)}px, ${s.y.toFixed(2)}px, 0) ` +
+        `rotate(${s.r.toFixed(2)}deg) translate(-50%, -50%)`;
+
+    // Bounds follow the field, so a resize re-derives them and keeps each
+    // burst wherever it had travelled to instead of resetting the field.
+    let placed = false;
+    const layout = () => {
+      const W = field.clientWidth, H = field.clientHeight;
+      if (!W || !H) return;
+      sparks.forEach((s) => {
+        s.w = s.el.offsetWidth; s.h = s.el.offsetHeight;
+        s.minX = s.w * BLEED;  s.maxX = W - s.w * BLEED;
+        s.minY = s.h * BLEED;  s.maxY = H - s.h * BLEED;
+        if (s.maxX < s.minX) { s.minX = s.maxX = W / 2; }
+        if (s.maxY < s.minY) { s.minY = s.maxY = H / 2; }
+        if (!placed) { s.x = s.startX * W; s.y = s.startY * H; }
+        s.x = Math.min(Math.max(s.x, s.minX), s.maxX);
+        s.y = Math.min(Math.max(s.y, s.minY), s.maxY);
+        paint(s);
+      });
+      placed = true;
+    };
+
+    let walk = 0, prev = 0;
+    const step = (now) => {
+      // Clamped so a backgrounded tab doesn't resume with one giant jump.
+      const dt = prev ? Math.min((now - prev) / 1000, 0.05) : 0;
+      prev = now;
+      sparks.forEach((s) => {
+        s.x += s.vx * dt; s.y += s.vy * dt; s.r += s.vr * dt;
+        if (s.x <= s.minX) { s.x = s.minX; s.vx =  Math.abs(s.vx); }
+        else if (s.x >= s.maxX) { s.x = s.maxX; s.vx = -Math.abs(s.vx); }
+        if (s.y <= s.minY) { s.y = s.minY; s.vy =  Math.abs(s.vy); }
+        else if (s.y >= s.maxY) { s.y = s.maxY; s.vy = -Math.abs(s.vy); }
+        paint(s);
+      });
+      walk = requestAnimationFrame(step);
+    };
+
+    const setWalking = (on) => {
+      if (on && !walk && !reduceMotion) { prev = 0; walk = requestAnimationFrame(step); }
+      else if (!on && walk) { cancelAnimationFrame(walk); walk = 0; }
+    };
+
+    layout();
+
+    // Fade in on first sight; stop the walker and the CSS boil whenever the
+    // section is off screen, so it costs nothing on the rest of the page.
+    new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        field.classList.toggle("live", en.isIntersecting);
+        if (en.isIntersecting) field.classList.add("in");
+        setWalking(en.isIntersecting);
+      });
+    }, { threshold: 0 }).observe(field);
+
+    if (!reduceMotion) {
+      let pointerX = 0, pointerY = 0, scrollShift = 0, raf = 0;
+      const draw = () => {
+        raf = 0;
+        layers.forEach(({ el, depth }) => {
+          el.style.transform =
+            `translate3d(${pointerX * depth}px, ${(scrollShift + pointerY) * depth}px, 0)`;
+        });
+      };
+      const queue = () => { if (!raf) raf = requestAnimationFrame(draw); };
+
+      // Geometry is cached so the scroll handler never forces a layout;
+      // it only ever reads window.scrollY.
+      let centre = 0, height = 0;
+      const measure = () => {
+        const r = field.getBoundingClientRect();
+        centre = r.top + window.scrollY + r.height / 2;
+        height = r.height;
+      };
+      const trackScroll = () => {
+        // -1 when the field sits below the fold → +1 when it is above it
+        const p = (centre - window.scrollY - innerHeight / 2) / ((innerHeight + height) / 2);
+        scrollShift = Math.max(-1, Math.min(1, p)) * 40;
+        queue();
+      };
+      const remeasure = () => { measure(); layout(); trackScroll(); };
+      document.addEventListener("scroll", trackScroll, { passive: true });
+      addEventListener("resize", remeasure, { passive: true });
+      remeasure();
+
+      addEventListener("pointermove", (e) => {
+        if (!finePointer) return;
+        pointerX = (e.clientX / innerWidth  - 0.5) * 22;
+        pointerY = (e.clientY / innerHeight - 0.5) * 14;
+        queue();
+      }, { passive: true });
+    } else {
+      addEventListener("resize", layout, { passive: true });
+    }
+  }
+
+  /* ---------- 8 · Console note ---------- */
   console.log(
     "%c Grace Danico %c Creative Director · Brand Design Director ",
     "background:#CDFF7B;color:#0A0A0A;font-weight:700;padding:4px 6px;border-radius:4px 0 0 4px",

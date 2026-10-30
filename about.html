@@ -32,8 +32,8 @@
     theme: {
       extend: {
         colors: {
-          ink: 'var(--bg)', oat: 'var(--fg)', lichen: 'var(--lichen)',
-          chartreuse: 'var(--chartreuse)', hairline: 'var(--hairline)',
+          background: 'var(--bg)', foreground: 'var(--fg)', accent: 'var(--accent)',
+          accent2: 'var(--accent-2)', hairline: 'var(--hairline)',
         },
         fontFamily: {
           grotesk: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
@@ -47,17 +47,17 @@
 
 <style>
   :root {
-    --bg: #0A0A0A; --fg: #FAF8F5; --lichen: #CDFF7B; --chartreuse: #22C55E;
+    --bg: #0A0A0A; --fg: #FAF8F5; --accent: #CDFF7B; --accent-2: #EBB0FF;
     --hairline: rgba(250, 248, 245, 0.12);
   }
-  html.oat {
-    --bg: #FAF8F5; --fg: #14140F; --lichen: #2F6B00; --chartreuse: #16A34A;
-    --hairline: rgba(20, 20, 15, 0.14);
+  html.light {
+    --bg: #F2EEF8; --fg: #0A0A0A; --accent: #B23A08; --accent-2: #582C2C;
+    --hairline: rgba(10, 10, 10, 0.14);
   }
 
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--fg); }
-  ::selection { background: var(--lichen); color: #0A0A0A; }
+  ::selection { background: var(--accent); color: var(--bg); }
 
   .grain::after {
     content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 60;
@@ -70,7 +70,7 @@
     60%{transform:translate(-2%,4%)} 80%{transform:translate(5%,2%)}
   }
 
-  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--chartreuse); z-index: 70; transition: width .1s linear; }
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--accent-2); z-index: 70; transition: width .1s linear; }
 
   .has-cursor, .has-cursor a, .has-cursor button, .has-cursor [data-magnetic] { cursor: none; }
   #cursor-ring, #cursor-dot {
@@ -96,15 +96,15 @@
       radial-gradient(130% 130% at 15% 10%, rgba(205,255,123,.22), transparent 55%),
       linear-gradient(155deg, #17180f, #0b0c08 62%);
   }
-  html.oat .surface {
+  html.light .surface {
     background:
-      radial-gradient(130% 130% at 15% 10%, rgba(47,107,0,.2), transparent 55%),
-      linear-gradient(155deg, #ece7dd, #f6f2ea 62%);
+      radial-gradient(130% 130% at 15% 10%, rgba(255,92,40,.2), transparent 55%),
+      linear-gradient(155deg, #e4deed, #ede8f4 62%);
   }
   .surface > .label {
     position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: 1rem;
     font: 500 11px/1.5 "Martian Mono", monospace; letter-spacing: .24em; text-transform: uppercase;
-    color: color-mix(in srgb, var(--lichen) 70%, transparent);
+    color: color-mix(in srgb, var(--accent) 70%, transparent);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -138,7 +138,7 @@
   #keroppi-gif {
     position: fixed; left: 0; top: 0;
     width: clamp(260px, 40vw, 420px); height: auto;
-    border: 3px solid var(--chartreuse); border-radius: 16px;
+    border: 3px solid var(--accent-2); border-radius: 16px;
     box-shadow: 0 30px 80px -16px rgba(0, 0, 0, .75);
     opacity: 0; pointer-events: none; z-index: 90;
     transition: opacity .3s ease; will-change: transform;
@@ -168,7 +168,7 @@
 
   <!-- Slim header -->
   <header class="flex h-20 items-center justify-between border-b border-hairline">
-    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-lichen">
+    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-accent">
       <!-- saucer logo mark -->
       <svg class="h-5 w-5 shrink-0 transition-transform duration-500 group-hover:rotate-[24deg]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M7 11q5-7 10 0Z"/>
@@ -178,8 +178,8 @@
       <span data-bounce class="wm text-[15px] font-bold tracking-tight">Grace Danico</span>
     </a>
     <nav class="flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] sm:gap-7">
-      <a href="index.html#work" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">Work</a>
-      <a href="about.html" data-magnetic aria-current="page" class="text-lichen">About</a>
+      <a href="index.html#work" data-magnetic class="text-foreground/60 transition-colors hover:text-accent">Work</a>
+      <a href="about.html" data-magnetic aria-current="page" class="text-accent">About</a>
     </nav>
   </header>
 
@@ -187,18 +187,18 @@
        INTRO BIO — text-forward
        ============================================================ -->
   <header class="py-16 lg:py-28">
-    <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-lichen">About · Creative Director, Los Angeles</p>
+    <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-accent">About · Creative Director, Los Angeles</p>
     <h1 class="reveal mt-8 max-w-[20ch] text-[clamp(2.4rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.03em]">
       Creative Director, archivist, and DJ based in Los Angeles.
     </h1>
     <div class="mt-12 grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-20">
-      <div class="reveal space-y-5 text-[19px] leading-[1.55] text-oat/75" data-delay="1">
+      <div class="reveal space-y-5 text-[19px] leading-[1.55] text-foreground/75" data-delay="1">
         <p>
           I'm a Filipino-American creative director based in Highland Park, Los Angeles.
         </p>
         <p>
           Over five years at Meta, I led teams building
-          <span class="text-lichen font-medium">brand and illustration systems viewed by billions daily</span>.
+          <span class="text-accent font-medium">brand and illustration systems viewed by billions daily</span>.
           Backed by an MLIS from Pratt, I specialize in structuring and scaling complex visual
           languages long before they ever touch a style guide.
         </p>
@@ -207,7 +207,7 @@
           history for clients like Google, Adobe, The New York Times, Los Angeles Times, and Warby
           Parker. I spent half a decade writing on design history for
           <a href="https://www.grainedit.com" target="_blank" rel="noopener"
-             class="text-oat underline decoration-hairline underline-offset-2 transition-colors hover:text-lichen">Grain Edit</a>,
+             class="text-foreground underline decoration-hairline underline-offset-2 transition-colors hover:text-accent">Grain Edit</a>,
           co-founded the Los Angeles Archivists Collective (and its journal,
           <span class="italic">Acid Free Magazine</span>), and served on the Executive Board of
           ICON: The Illustration Conference.
@@ -216,7 +216,7 @@
           When I'm not straining my eyeballs staring at a screen, you can find me indulging in
           J-Dramas, perusing eBay for vintage
           <span data-bounce role="text" aria-label="Sanrio" class="keroppi wm">Sanrio</span>, or
-          DJing with Nite Jewel at <span class="text-oat">Gold Line</span>.
+          DJing with Nite Jewel at <span class="text-foreground">Gold Line</span>.
         </p>
       </div>
       <img src="About/portrait.jpg" width="1400" height="933" alt="Grace Danico" loading="lazy"
@@ -230,12 +230,12 @@
        MOODBOARD
        ============================================================ -->
   <section class="mx-auto max-w-wordmark px-6 lg:px-5">
-    <div class="reveal flex items-end justify-between border-b-2 border-chartreuse pb-3">
-      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">Moodboard</span>
-      <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">On the studio wall</span>
+    <div class="reveal flex items-end justify-between border-b-2 border-accent pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">Moodboard</span>
+      <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">On the studio wall</span>
     </div>
 
-    <p class="reveal mt-8 max-w-[54ch] font-mono text-[11px] leading-relaxed text-oat/45">
+    <p class="reveal mt-8 max-w-[54ch] font-mono text-[11px] leading-relaxed text-foreground/45">
       A rotating scrapbook of what's pinned up this month.
     </p>
 
@@ -262,9 +262,9 @@
        ON ROTATION
        ============================================================ -->
   <section class="mx-auto mt-28 max-w-wordmark px-6 lg:mt-40 lg:px-5">
-    <div class="reveal flex items-end justify-between border-b-2 border-chartreuse pb-3">
-      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">On Rotation</span>
-      <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">What I'm listening to</span>
+    <div class="reveal flex items-end justify-between border-b-2 border-accent pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">On Rotation</span>
+      <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">What I'm listening to</span>
     </div>
 
     <div class="mt-10 grid gap-8 sm:grid-cols-3 sm:gap-6">
@@ -274,9 +274,9 @@
              class="aspect-square w-full rounded-lg border border-hairline object-cover" />
         <h3 class="mt-4 flex items-start justify-between gap-3 text-[18px] font-semibold leading-tight">
           Login.jp
-          <span class="shrink-0 pt-0.5 text-lichen opacity-0 transition-opacity group-hover:opacity-100">↗</span>
+          <span class="shrink-0 pt-0.5 text-accent opacity-0 transition-opacity group-hover:opacity-100">↗</span>
         </h3>
-        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">YouTube</p>
+        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">YouTube</p>
       </a>
 
       <a href="https://podcasts.apple.com/us/podcast/deep-hidden-meaning-radio-with-nile-rodgers/id1701189228" target="_blank" rel="noopener"
@@ -285,9 +285,9 @@
              class="aspect-square w-full rounded-lg border border-hairline object-cover" />
         <h3 class="mt-4 flex items-start justify-between gap-3 text-[18px] font-semibold leading-tight">
           Deep Hidden Meaning with Nile Rodgers
-          <span class="shrink-0 pt-0.5 text-lichen opacity-0 transition-opacity group-hover:opacity-100">↗</span>
+          <span class="shrink-0 pt-0.5 text-accent opacity-0 transition-opacity group-hover:opacity-100">↗</span>
         </h3>
-        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">Apple Podcasts</p>
+        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">Apple Podcasts</p>
       </a>
 
       <a href="https://www.youtube.com/watch?v=Dj05Tqi26q0" target="_blank" rel="noopener"
@@ -296,9 +296,9 @@
              class="aspect-square w-full rounded-lg border border-hairline object-cover" />
         <h3 class="mt-4 flex items-start justify-between gap-3 text-[18px] font-semibold leading-tight">
           Filipino Jazz Fusion
-          <span class="shrink-0 pt-0.5 text-lichen opacity-0 transition-opacity group-hover:opacity-100">↗</span>
+          <span class="shrink-0 pt-0.5 text-accent opacity-0 transition-opacity group-hover:opacity-100">↗</span>
         </h3>
-        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-oat/40">YouTube</p>
+        <p class="mt-1 font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40">YouTube</p>
       </a>
     </div>
   </section>
@@ -306,15 +306,15 @@
 
 <!-- CTA -->
 <a href="mailto:hello@gracedanico.com" data-magnetic
-   class="group mt-24 block border-t border-hairline transition-colors duration-500 hover:bg-lichen">
+   class="group mt-24 block border-t border-hairline transition-colors duration-500 hover:bg-accent">
   <div class="mx-auto flex max-w-wordmark items-center justify-between gap-6 px-6 py-16 lg:px-5 lg:py-24">
     <div>
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-oat/50 transition-colors group-hover:text-[#0A0A0A]/60">Let's make something</p>
-      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-[#0A0A0A]">
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-foreground/50 transition-colors group-hover:text-background/60">Let's make something</p>
+      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-background">
         hello@gracedanico.com
       </h2>
     </div>
-    <span class="shrink-0 text-4xl text-lichen transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0A0A0A] lg:text-6xl">↗</span>
+    <span class="shrink-0 text-4xl text-accent transition-all duration-500 group-hover:translate-x-2 group-hover:text-background lg:text-6xl">↗</span>
   </div>
 </a>
 
@@ -323,19 +323,19 @@
 
 <footer class="mx-auto max-w-wordmark px-6 py-10 lg:px-5">
   <div class="flex flex-col gap-4 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:justify-between">
-    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/45">© <span id="year">2026</span> Grace Danico</p>
+    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/45">© <span id="year">2026</span> Grace Danico</p>
     <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em]">
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="mailto:hello@gracedanico.com">Email</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="mailto:hello@gracedanico.com">Email</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
       <button id="theme-toggle" data-magnetic type="button" aria-pressed="false"
-              class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/50 transition-colors hover:text-lichen sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
+              class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50 transition-colors hover:text-accent sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
         Light mode
       </button>
     </nav>
   </div>
-  <p class="mt-6 font-mono text-[10px] leading-relaxed tracking-[0.06em] text-oat/25">
+  <p class="mt-6 font-mono text-[10px] leading-relaxed tracking-[0.06em] text-foreground/25">
     psst — say hi to the wordmark.
   </p>
 </footer>
@@ -399,16 +399,17 @@
 
   /* Light / dark mode (footer toggle) */
   const themeBtn = document.getElementById("theme-toggle");
-  try { if (localStorage.getItem("gd-theme") === "oat") document.documentElement.classList.add("oat"); } catch (_) {}
+  try { const saved = localStorage.getItem("gd-theme");
+    if (saved === "light" || saved === "oat") document.documentElement.classList.add("light"); } catch (_) {}
   const syncThemeBtn = () => {
-    const light = document.documentElement.classList.contains("oat");
+    const light = document.documentElement.classList.contains("light");
     themeBtn.textContent = light ? "Dark mode" : "Light mode";
     themeBtn.setAttribute("aria-pressed", String(light));
   };
   syncThemeBtn();
   themeBtn.addEventListener("click", () => {
-    const light = document.documentElement.classList.toggle("oat");
-    try { localStorage.setItem("gd-theme", light ? "oat" : "ink"); } catch (_) {}
+    const light = document.documentElement.classList.toggle("light");
+    try { localStorage.setItem("gd-theme", light ? "light" : "dark"); } catch (_) {}
     syncThemeBtn();
   });
 

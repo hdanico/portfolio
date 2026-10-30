@@ -21,10 +21,13 @@ ATTR = re.compile(r'(?:src|href|poster|data-src|srcset)="([^"]+)"')
 # Files referenced only from <meta> tags (og:image etc.), not from src/href.
 EXTRA = ["About/og-cover.jpg"]
 
+# Draft pages that stay local until approved (and aren't scanned for assets).
+EXCLUDE = {"index-v2.html"}
+
 def referenced_assets():
     out = set()
     for f in os.listdir(SRC):
-        if not f.endswith(".html"):
+        if not f.endswith(".html") or f in EXCLUDE:
             continue
         t = open(os.path.join(SRC, f), encoding="utf-8").read()
         for m in ATTR.finditer(t):
@@ -54,7 +57,7 @@ def main():
 
     # pages + favicon
     for f in os.listdir(SRC):
-        if f.endswith(".html") or f == "favicon.svg":
+        if (f.endswith(".html") and f not in EXCLUDE) or f == "favicon.svg":
             shutil.copy2(os.path.join(SRC, f), os.path.join(DST, f))
             copied += 1
 

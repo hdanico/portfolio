@@ -32,8 +32,8 @@
     theme: {
       extend: {
         colors: {
-          ink: 'var(--bg)', oat: 'var(--fg)', lichen: 'var(--lichen)',
-          chartreuse: 'var(--chartreuse)', hairline: 'var(--hairline)',
+          background: 'var(--bg)', foreground: 'var(--fg)', accent: 'var(--accent)',
+          accent2: 'var(--accent-2)', hairline: 'var(--hairline)',
         },
         fontFamily: {
           grotesk: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
@@ -47,17 +47,17 @@
 
 <style>
   :root {
-    --bg: #0A0A0A; --fg: #FAF8F5; --lichen: #CDFF7B; --chartreuse: #22C55E;
+    --bg: #0A0A0A; --fg: #FAF8F5; --accent: #CDFF7B; --accent-2: #EBB0FF;
     --hairline: rgba(250, 248, 245, 0.12);
   }
-  html.oat {
-    --bg: #FAF8F5; --fg: #14140F; --lichen: #2F6B00; --chartreuse: #16A34A;
-    --hairline: rgba(20, 20, 15, 0.14);
+  html.light {
+    --bg: #F2EEF8; --fg: #0A0A0A; --accent: #B23A08; --accent-2: #582C2C;
+    --hairline: rgba(10, 10, 10, 0.14);
   }
 
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--fg); }
-  ::selection { background: var(--lichen); color: #0A0A0A; }
+  ::selection { background: var(--accent); color: var(--bg); }
 
   .grain::after {
     content: ""; position: fixed; inset: -50%; pointer-events: none; z-index: 60;
@@ -70,7 +70,7 @@
     60%{transform:translate(-2%,4%)} 80%{transform:translate(5%,2%)}
   }
 
-  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--chartreuse); z-index: 70; transition: width .1s linear; }
+  #progress { position: fixed; top: 0; left: 0; height: 2px; width: 0%; background: var(--accent-2); z-index: 70; transition: width .1s linear; }
 
   .has-cursor, .has-cursor a, .has-cursor button, .has-cursor [data-magnetic] { cursor: none; }
   #cursor-ring, #cursor-dot {
@@ -97,10 +97,10 @@
       radial-gradient(130% 130% at 15% 10%, rgba(205,255,123,.22), transparent 55%),
       linear-gradient(155deg, #17180f, #0b0c08 62%);
   }
-  html.oat .surface {
+  html.light .surface {
     background:
-      radial-gradient(130% 130% at 15% 10%, rgba(47,107,0,.20), transparent 55%),
-      linear-gradient(155deg, #ece7dd, #f6f2ea 62%);
+      radial-gradient(130% 130% at 15% 10%, rgba(255,92,40,.20), transparent 55%),
+      linear-gradient(155deg, #e4deed, #ede8f4 62%);
   }
   .surface::before {
     content: ""; position: absolute; inset: 0; opacity: .06;
@@ -109,7 +109,7 @@
   .surface > .label {
     position: absolute; inset: 0; display: grid; place-items: center;
     font: 500 12px/1.4 "Martian Mono", monospace; letter-spacing: .28em; text-transform: uppercase;
-    color: color-mix(in srgb, var(--lichen) 70%, transparent); text-align: center; padding: 1rem;
+    color: color-mix(in srgb, var(--accent) 70%, transparent); text-align: center; padding: 1rem;
   }
 
   .metric-num { font-variant-numeric: tabular-nums; }
@@ -151,7 +151,7 @@
 
   <!-- Slim header -->
   <header class="flex h-20 items-center justify-between border-b border-hairline">
-    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-lichen">
+    <a href="index.html" data-magnetic aria-label="Grace Danico — home" class="group inline-flex items-center gap-3 text-accent">
       <!-- saucer logo mark -->
       <svg class="h-5 w-5 shrink-0 transition-transform duration-500 group-hover:rotate-[24deg]" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
         <path d="M7 11q5-7 10 0Z"/>
@@ -161,8 +161,8 @@
       <span data-bounce class="wm text-[15px] font-bold tracking-tight">Grace Danico</span>
     </a>
     <nav class="flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] sm:gap-7">
-      <a href="index.html#work" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">Work</a>
-      <a href="about.html" data-magnetic class="text-oat/60 transition-colors hover:text-lichen">About</a>
+      <a href="index.html#work" data-magnetic class="text-foreground/60 transition-colors hover:text-accent">Work</a>
+      <a href="about.html" data-magnetic class="text-foreground/60 transition-colors hover:text-accent">About</a>
     </nav>
   </header>
 
@@ -171,36 +171,36 @@
        ============================================================ -->
   <header class="grid gap-12 py-16 lg:grid-cols-[1fr_300px] lg:gap-16 lg:py-24">
     <div>
-      <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-lichen">Case Study · Illustration &amp; Hand-Lettering</p>
+      <p class="reveal font-mono text-[11px] uppercase tracking-[0.28em] text-accent">Case Study · Illustration &amp; Hand-Lettering</p>
       <h1 class="reveal mt-6 text-[clamp(2.6rem,7vw,5.5rem)] font-bold leading-[0.98] tracking-[-0.03em]">101 Best California Experiences</h1>
-      <p class="reveal mt-8 max-w-[48ch] text-[20px] font-medium leading-[1.4] text-oat/70" data-delay="1">The <em class="not-italic text-oat/90">L.A. Times</em> set out to name the 101 best things to do in California. I gave the package its face — a smiling, inflatable cast of state icons and a hand-drawn logo, built to be animated and worn.</p>
+      <p class="reveal mt-8 max-w-[48ch] text-[20px] font-medium leading-[1.4] text-foreground/70" data-delay="1">The <em class="not-italic text-foreground/90">L.A. Times</em> set out to name the 101 best things to do in California. I gave the package its face — a smiling, inflatable cast of state icons and a hand-drawn logo, built to be animated and worn.</p>
     </div>
 
     <aside class="reveal self-end" data-delay="2">
       <dl class="grid grid-cols-2 gap-x-6 gap-y-7 border-t border-hairline pt-7 lg:grid-cols-1">
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Role</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Illustration, Hand-Lettering &amp; Character Design</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Role</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">Illustration, Hand-Lettering &amp; Character Design</dd>
         </div>
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Timeline</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">2022</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Timeline</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">2022</dd>
         </div>
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Client</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Los Angeles Times</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Client</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">Los Angeles Times</dd>
         </div>
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Art Director</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Jess De Jesus</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Art Director</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">Jess De Jesus</dd>
         </div>
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Words</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Christopher Reynolds</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Words</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">Christopher Reynolds</dd>
         </div>
         <div>
-          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/40">Animation</dt>
-          <dd class="mt-2 text-[14px] leading-snug text-oat/90">Tomasz Czajka · Li Anne Liew</dd>
+          <dt class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/40">Animation</dt>
+          <dd class="mt-2 text-[14px] leading-snug text-foreground/90">Tomasz Czajka · Li Anne Liew</dd>
         </div>
       </dl>
     </aside>
@@ -209,7 +209,7 @@
   <!-- Hero -->
   <figure class="reveal mb-28 lg:mb-40">
     <img src="Case%20Studies/09_101-Best/web/cal-hero.jpg" alt="A four-panel spread of the California 101 art — a cluster of smiling flowers on orange, a grinning double cheeseburger on yellow, a palm tree with sunglasses and its tongue out on red, and 'CALIFORNIA PERSON' in puffy hand-lettering on purple" width="2200" height="1237" loading="eager" class="block h-auto w-full rounded-2xl border border-hairline" />
-    <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-oat/40">The cast — state clichés redrawn as puffy, smiling characters</figcaption>
+    <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/40">The cast — state clichés redrawn as puffy, smiling characters</figcaption>
   </figure>
 </div>
 
@@ -220,20 +220,20 @@
        ============================================================ -->
   <section class="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
     <div class="reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-lichen">01 — The Brief</p>
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-accent">01 — The Brief</p>
       <h2 class="mt-4 text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">A 101-item love letter to California, and no face to put on it.</h2>
-      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">The Times' travel desk spent months building <em class="not-italic text-oat/90">California 101</em> — a numbered (not ranked) guide to the best experiences in the state, from escaping to Alcatraz to a lily pond in Balboa Park. It published in May 2022 across latimes.com and social.</p>
-      <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">A package that big needed an identity that could scale — a logo, section heads, a cover, art riding on every entry — and read as joyful, not another gray travel section leaning on stock landscapes.</p>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-foreground/70">The Times' travel desk spent months building <em class="not-italic text-foreground/90">California 101</em> — a numbered (not ranked) guide to the best experiences in the state, from escaping to Alcatraz to a lily pond in Balboa Park. It published in May 2022 across latimes.com and social.</p>
+      <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-foreground/70">A package that big needed an identity that could scale — a logo, section heads, a cover, art riding on every entry — and read as joyful, not another gray travel section leaning on stock landscapes.</p>
     </div>
     <figure class="reveal lg:mt-10" data-delay="1">
       <img src="Case%20Studies/09_101-Best/web/cal-01.jpg" alt="An aerial photo of Emerald Bay and Fannette Island at Lake Tahoe, framed with a bright green border, with an illustrated smiling sun in purple sunglasses and two puffy clouds composited on top" width="1332" height="999" loading="lazy" class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover" />
-      <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-oat/40">Destination photography stayed — the characters rode along on top</figcaption>
+      <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/40">Destination photography stayed — the characters rode along on top</figcaption>
     </figure>
   </section>
 
-  <blockquote class="reveal my-24 border-l-2 border-chartreuse pl-6 lg:my-32 lg:pl-10">
-    <p class="max-w-[26ch] text-[clamp(1.6rem,4vw,2.6rem)] font-medium leading-[1.25] tracking-[-0.02em] text-lichen">&ldquo;It's a peek into my travel notebook through the Golden State.&rdquo;</p>
-    <cite class="mt-6 block font-mono text-[10px] uppercase not-italic tracking-[0.2em] text-oat/40">— Christopher Reynolds, introducing California 101 · L.A. Times</cite>
+  <blockquote class="reveal my-24 border-l-2 border-accent pl-6 lg:my-32 lg:pl-10">
+    <p class="max-w-[26ch] text-[clamp(1.6rem,4vw,2.6rem)] font-medium leading-[1.25] tracking-[-0.02em] text-accent">&ldquo;It's a peek into my travel notebook through the Golden State.&rdquo;</p>
+    <cite class="mt-6 block font-mono text-[10px] uppercase not-italic tracking-[0.2em] text-foreground/40">— Christopher Reynolds, introducing California 101 · L.A. Times</cite>
   </blockquote>
 
   <!-- ============================================================
@@ -242,13 +242,13 @@
   <section class="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
     <figure class="reveal order-2 lg:order-1">
       <img src="Case%20Studies/09_101-Best/web/cal-poster.jpg" alt="The vertical California 101 key art — a Los Angeles Times masthead over bubble lettering reading '101 BEST', liquid-chrome script reading 'California', and 'EXPERIENCES', surrounded by smiling characters: a spiky sun in sunglasses, a palm tree, a jellyfish, a cactus in a pink cowboy hat, a cheeseburger, a striped soda cup, a shopping bag, clouds, flowers, a little blue car and paper lanterns" width="724" height="1500" loading="lazy" class="mx-auto max-h-[600px] w-auto rounded-xl border border-hairline drop-shadow-2xl" />
-      <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-oat/40">The key art — one poster, the whole cast</figcaption>
+      <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/40">The key art — one poster, the whole cast</figcaption>
     </figure>
     <div class="reveal order-1 lg:order-2" data-delay="1">
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-lichen">02 — The Cast</p>
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-accent">02 — The Cast</p>
       <h2 class="mt-4 text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">State clichés, redrawn as characters.</h2>
-      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Every obvious California symbol became a soft, dimensional, smiling character: the sun in purple shades, a palm with its tongue out, a cactus in a pink cowboy hat, a cheeseburger and a striped soda cup with faces, a jellyfish, a shopping bag in sunglasses, clouds, poppies, a little blue car, a string of night-market lanterns.</p>
-      <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-oat/70">Paired with hand-drawn lettering — bubble caps for <em class="not-italic text-oat/90">101 BEST</em> and <em class="not-italic text-oat/90">EXPERIENCES</em>, a liquid-chrome script for <em class="not-italic text-oat/90">California</em> — and a logo where a spiky sun stands in for a character in <em class="not-italic text-oat/90">101</em>. Everything was built as separate elements, so Tomasz Czajka and Li Anne Liew could animate them and the desk could drop a character onto any of the 101 entries.</p>
+      <p class="mt-5 max-w-[54ch] text-[17px] leading-[1.6] text-foreground/70">Every obvious California symbol became a soft, dimensional, smiling character: the sun in purple shades, a palm with its tongue out, a cactus in a pink cowboy hat, a cheeseburger and a striped soda cup with faces, a jellyfish, a shopping bag in sunglasses, clouds, poppies, a little blue car, a string of night-market lanterns.</p>
+      <p class="mt-4 max-w-[54ch] text-[17px] leading-[1.6] text-foreground/70">Paired with hand-drawn lettering — bubble caps for <em class="not-italic text-foreground/90">101 BEST</em> and <em class="not-italic text-foreground/90">EXPERIENCES</em>, a liquid-chrome script for <em class="not-italic text-foreground/90">California</em> — and a logo where a spiky sun stands in for a character in <em class="not-italic text-foreground/90">101</em>. Everything was built as separate elements, so Tomasz Czajka and Li Anne Liew could animate them and the desk could drop a character onto any of the 101 entries.</p>
     </div>
   </section>
 
@@ -256,26 +256,26 @@
        03 · THE SYSTEM
        ============================================================ -->
   <section class="mt-28 lg:mt-40">
-    <div class="reveal border-b-2 border-chartreuse pb-3">
-      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">03 — The System</span>
+    <div class="reveal border-b-2 border-accent pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">03 — The System</span>
     </div>
-    <p class="reveal mt-8 max-w-[60ch] text-[17px] leading-[1.6] text-oat/70">One drawing style, three jobs: a logo, a set of section heads, and a kit of characters the whole newsroom could reuse.</p>
+    <p class="reveal mt-8 max-w-[60ch] text-[17px] leading-[1.6] text-foreground/70">One drawing style, three jobs: a logo, a set of section heads, and a kit of characters the whole newsroom could reuse.</p>
 
     <div class="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
       <div class="reveal">
         <img src="Case%20Studies/09_101-Best/web/cal-title.jpg" alt="Close-up of the California 101 logo — white bubble letterforms with a spiky, sunglasses-wearing sun standing in for a digit, on a warm orange ground" width="1100" height="1100" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
         <h3 class="text-[20px] font-semibold">A sun for a number</h3>
-        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">The logo: bubble letterforms with the sunglasses-wearing sun dropped into <em class="not-italic text-oat/90">101</em>. One mark, from favicon to section head.</p>
+        <p class="mt-2 text-[15px] leading-[1.55] text-foreground/65">The logo: bubble letterforms with the sunglasses-wearing sun dropped into <em class="not-italic text-foreground/90">101</em>. One mark, from favicon to section head.</p>
       </div>
       <div class="reveal" data-delay="1">
         <img src="Case%20Studies/09_101-Best/web/cal-palm.jpg" alt="A single illustrated palm tree with a bending gold trunk and a green frond canopy that has sunglasses and a tongue sticking out, on a red ground" width="1200" height="1200" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
         <h3 class="text-[20px] font-semibold">Inflatable, not flat</h3>
-        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">Every character rendered soft and three-dimensional with one light source — so it held up blown large on a lead image and shrank cleanly into a thumbnail.</p>
+        <p class="mt-2 text-[15px] leading-[1.55] text-foreground/65">Every character rendered soft and three-dimensional with one light source — so it held up blown large on a lead image and shrank cleanly into a thumbnail.</p>
       </div>
       <div class="reveal" data-delay="2">
         <img src="Case%20Studies/09_101-Best/web/cal-flowers.jpg" alt="Three puffy smiling flowers with green leaves on an orange sky with clouds and a stream of green grass below" width="800" height="800" loading="lazy" class="mb-5 aspect-square w-full rounded-xl border border-hairline object-cover" />
         <h3 class="text-[20px] font-semibold">It kept going</h3>
-        <p class="mt-2 text-[15px] leading-[1.55] text-oat/65">A companion reader callout — <em class="not-italic text-oat/90">what's your favorite California experience?</em> — got its own piece: same smiling flowers, same hand.</p>
+        <p class="mt-2 text-[15px] leading-[1.55] text-foreground/65">A companion reader callout — <em class="not-italic text-foreground/90">what's your favorite California experience?</em> — got its own piece: same smiling flowers, same hand.</p>
       </div>
     </div>
   </section>
@@ -286,7 +286,7 @@
   <section class="mt-28 lg:mt-40">
     <div class="reveal">
       <h2 class="text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">Then the cast started moving.</h2>
-      <p class="mt-5 max-w-[56ch] text-[17px] leading-[1.6] text-oat/70">Tomasz Czajka and Li Anne Liew animated the characters, and the Times shipped them as a sticker pack on its <a class="underline decoration-hairline underline-offset-4 transition-colors hover:text-lichen" href="https://giphy.com/latimes/calivibes" target="_blank" rel="noopener">GIPHY channel</a> — searchable inside Instagram and Facebook Stories, so a reader could stick the wobbling sun or the sunglasses tote onto their own California. They&rsquo;ve since been viewed millions of times.</p>
+      <p class="mt-5 max-w-[56ch] text-[17px] leading-[1.6] text-foreground/70">Tomasz Czajka and Li Anne Liew animated the characters, and the Times shipped them as a sticker pack on its <a class="underline decoration-hairline underline-offset-4 transition-colors hover:text-accent" href="https://giphy.com/latimes/calivibes" target="_blank" rel="noopener">GIPHY channel</a> — searchable inside Instagram and Facebook Stories, so a reader could stick the wobbling sun or the sunglasses tote onto their own California. They&rsquo;ve since been viewed millions of times.</p>
     </div>
 
     <div class="reveal mt-10 overflow-hidden rounded-2xl border border-hairline bg-[#F4F1EA] p-6 sm:p-9">
@@ -306,57 +306,130 @@
        04 · RESULTS
        ============================================================ -->
   <section class="mt-28 lg:mt-40">
-    <div class="reveal border-b-2 border-chartreuse pb-3">
-      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-oat">04 — Results</span>
+    <div class="reveal border-b-2 border-accent pb-3">
+      <span class="font-mono text-[11px] font-medium uppercase tracking-[0.24em] text-foreground">04 — Results</span>
     </div>
 
     <div class="mt-14 grid gap-x-8 gap-y-14 sm:grid-cols-2 lg:grid-cols-3">
       <div class="reveal">
-        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="20" data-suffix="">0</p>
-        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Spot illustrations, plus a cover and hero</p>
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-accent" data-count="20" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-foreground/55">Spot illustrations, plus a cover and hero</p>
       </div>
       <div class="reveal" data-delay="1">
-        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="7" data-suffix="">0</p>
-        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Hand-lettering treatments — logo, heads, display</p>
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-accent" data-count="7" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-foreground/55">Hand-lettering treatments — logo, heads, display</p>
       </div>
       <div class="reveal" data-delay="2">
-        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-lichen" data-count="18" data-suffix="">0</p>
-        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-oat/55">Pieces in the L.A. Times Store capsule collection</p>
+        <p class="metric-num text-[clamp(3rem,6vw,4.5rem)] font-bold leading-none text-accent" data-count="18" data-suffix="">0</p>
+        <p class="mt-3 font-mono text-[11px] uppercase leading-relaxed tracking-[0.14em] text-foreground/55">Pieces in the L.A. Times Store capsule collection</p>
       </div>
     </div>
 
     <div class="reveal mt-20 grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
-      <p class="text-[18px] leading-[1.6] text-oat/75"><em class="not-italic text-oat/90">California 101</em> became a recurring L.A. Times franchise — later returning as a printed edition and an annual update. The character world moved off the page and into the L.A. Times Store as an 18-piece capsule collection — hand-lettered crewnecks, bucket hats, totes and joggers (<em class="not-italic text-oat/90">West Coast Weekend</em>, <em class="not-italic text-oat/90">Love, California</em>, <em class="not-italic text-oat/90">California Person</em>&hellip;) with the little icons stitched down one sleeve. State-cliché starter pack, smiling back at you from a tote bag.</p>
+      <p class="text-[18px] leading-[1.6] text-foreground/75"><em class="not-italic text-foreground/90">California 101</em> became a recurring L.A. Times franchise — later returning as a printed edition and an annual update. The character world moved off the page and into the L.A. Times Store as an 18-piece capsule collection — hand-lettered crewnecks, bucket hats, totes and joggers (<em class="not-italic text-foreground/90">West Coast Weekend</em>, <em class="not-italic text-foreground/90">Love, California</em>, <em class="not-italic text-foreground/90">California Person</em>&hellip;) with the little icons stitched down one sleeve. State-cliché starter pack, smiling back at you from a tote bag.</p>
       <figure>
         <img src="Case%20Studies/09_101-Best/web/cal-final.jpg" alt="Three people posing against an orange graffiti wall in the California 101 apparel — a white 'Love, California' crewneck, a black 'West Coast Weekend' crewneck and bucket hat, and a black 'California Person' tote — all in Grace Danico's hand-lettering" width="1350" height="1012" loading="lazy" class="aspect-[4/3] w-full rounded-xl border border-hairline object-cover" />
-        <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-oat/40">The capsule at the L.A. Times Store — lettering and icons, worn</figcaption>
+        <figcaption class="mt-3 font-mono text-[11px] uppercase tracking-[0.16em] text-foreground/40">The capsule at the L.A. Times Store — lettering and icons, worn</figcaption>
       </figure>
+    </div>
+  </section>
+  <!-- ============================================================
+       BAND · THE CAPSULE  ·  merch carousel (L.A. Times Store)
+       Native horizontal scroll + snap; the arrow buttons just nudge
+       the scroller, so touch / trackpad / keyboard all work without JS.
+       ============================================================ -->
+  <section class="mt-28 lg:mt-40" aria-labelledby="merch-h">
+    <div class="reveal flex flex-wrap items-end justify-between gap-6">
+      <div>
+        <h2 id="merch-h" class="text-[clamp(1.8rem,3.4vw,2.6rem)] font-semibold leading-tight tracking-[-0.02em]">The capsule, piece by piece.</h2>
+        <p class="mt-5 max-w-[56ch] text-[17px] leading-[1.6] text-foreground/70">Crewnecks, joggers, bucket hats, totes, a water bottle and a deck of cards — the lettering and the cast, made to be worn around the state they were drawn for.</p>
+      </div>
+      <div class="flex items-center gap-3" data-merch-controls>
+        <span class="font-mono text-[10px] uppercase tracking-[0.18em] text-foreground/40"><span data-merch-count>1</span> / 13</span>
+        <button type="button" data-merch-prev aria-label="Previous items" data-magnetic class="grid h-11 w-11 place-items-center rounded-full border border-hairline text-foreground/80 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-30">&larr;</button>
+        <button type="button" data-merch-next aria-label="Next items" data-magnetic class="grid h-11 w-11 place-items-center rounded-full border border-hairline text-foreground/80 transition-colors hover:border-accent hover:text-accent disabled:pointer-events-none disabled:opacity-30">&rarr;</button>
+      </div>
+    </div>
+
+    <div data-merch-track tabindex="0" aria-label="L.A. Times Store capsule — scroll for more" class="reveal mt-10 -mx-6 flex snap-x snap-mandatory items-start gap-4 overflow-x-auto scroll-smooth px-6 pb-4 outline-none focus-visible:ring-2 focus-visible:ring-accent lg:mx-0 lg:px-0 [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-skate.jpg" alt="A model in the black West Coast Weekend crewneck, the cactus, moon, sun and palm icons running down one sleeve, holding a pink skateboard against a graffiti wall" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">West Coast Weekend crewneck, worn</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-wcw-black.jpg" alt="Black crewneck with 'West Coast Weekend' in puffy orange-to-pink hand-lettering and the character icons down the sleeve" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">West Coast Weekend crewneck</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-venice.jpg" alt="Three friends walking the Venice boardwalk in matching sweatsuits — West Coast Weekend in black, Love, California and California Person in white — icons on the jogger legs" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Sweatsuits on the Venice boardwalk</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-floral-worn.jpg" alt="A model against a blue door in a white 'California Person' bucket hat and a white crewneck where the Los Angeles Times masthead sits inside a bunch of California poppies" width="663" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Bucket hat + poppy masthead crewneck</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-floral-white.jpg" alt="White crewneck with the Los Angeles Times blackletter masthead woven through illustrated pink, cream and orange California poppies" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Poppy masthead crewneck, white</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-cp-black.jpg" alt="Front of a black long-sleeve crewneck with a small 'California Person' bubble-lettering print on the left chest" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">California Person crewneck, black — front</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-floral-black.jpg" alt="Back of the black California Person long-sleeve crewneck, printed with a large bunch of illustrated California poppies and a small Los Angeles Times wordmark" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">California Person crewneck, black — back</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-cp-white.jpg" alt="White crewneck with 'California Person' in glossy orange and pink bubble lettering and the character icons down the sleeve" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">California Person crewneck, white</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-cards-play.jpg" alt="Overhead shot of three friends in the capsule sweats playing cards on the pavement, the black character-pattern card backs in the middle" width="669" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">The playing cards, in play</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-cards.jpg" alt="A fan of playing cards with black backs printed with the sun, cactus, palm and moon characters and the Los Angeles Times wordmark" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Character playing cards</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-tote-worn.jpg" alt="A model in a black California Person crewneck against a sunlit white wall, carrying a black 'Love, California' tote and the character water bottle" width="881" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Love, California tote + water bottle, worn</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-tote.jpg" alt="Black canvas tote with 'California Person' in glossy orange and pink bubble lettering" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">California Person tote</figcaption>
+        </figure>
+        <figure class="merch-slide w-min shrink-0 snap-start">
+          <img src="Case%20Studies/09_101-Best/web/cal-merch-bottle.jpg" alt="Clear water bottle with an orange cap, printed all over with the puffy sun, cactus, palm and moon characters" width="1000" height="1000" loading="lazy" class="h-[min(62vh,440px,78vw)] w-auto max-w-none rounded-xl border border-hairline object-cover" />
+          <figcaption class="mt-3 font-mono text-[10px] uppercase tracking-[0.16em] text-foreground/45">Character water bottle</figcaption>
+        </figure>
     </div>
   </section>
 </main>
 
 <!-- Next project -->
 <a href="case-creative-archive.html" data-magnetic
-   class="group mt-32 block border-t border-hairline transition-colors duration-500 hover:bg-lichen">
+   class="group mt-32 block border-t border-hairline transition-colors duration-500 hover:bg-accent">
   <div class="mx-auto flex max-w-wordmark items-center justify-between gap-6 px-6 py-16 lg:px-5 lg:py-24">
     <div>
-      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-oat/50 transition-colors group-hover:text-[#0A0A0A]/60">Next Project</p>
-      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-[#0A0A0A]">Creative Archive</h2>
+      <p class="font-mono text-[11px] uppercase tracking-[0.24em] text-foreground/50 transition-colors group-hover:text-background/60">Next Project</p>
+      <h2 class="mt-3 text-[clamp(2rem,5vw,3.5rem)] font-bold leading-none tracking-[-0.02em] transition-colors group-hover:text-background">Creative Archive</h2>
     </div>
-    <span class="shrink-0 text-4xl text-lichen transition-all duration-500 group-hover:translate-x-2 group-hover:text-[#0A0A0A] lg:text-6xl">↗</span>
+    <span class="shrink-0 text-4xl text-accent transition-all duration-500 group-hover:translate-x-2 group-hover:text-background lg:text-6xl">↗</span>
   </div>
 </a>
 
 <footer class="mx-auto max-w-wordmark px-6 py-10 lg:px-5">
   <div class="flex flex-col gap-4 border-t border-hairline pt-8 sm:flex-row sm:items-center sm:justify-between">
-    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/45">© <span id="year">2026</span> Grace Danico</p>
+    <p class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/45">© <span id="year">2026</span> Grace Danico</p>
     <nav class="flex flex-wrap items-center gap-x-6 gap-y-2 font-mono text-[10px] uppercase tracking-[0.2em]">
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="mailto:hello@gracedanico.com">Email</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
-      <a data-magnetic class="text-oat/70 transition-colors hover:text-lichen" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="mailto:hello@gracedanico.com">Email</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.instagram.com/gogograce" target="_blank" rel="noopener">Instagram</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://www.linkedin.com/in/gracedanico" target="_blank" rel="noopener">LinkedIn</a>
+      <a data-magnetic class="text-foreground/70 transition-colors hover:text-accent" href="https://open.spotify.com/user/122427503" target="_blank" rel="noopener">Spotify</a>
       <button id="theme-toggle" data-magnetic type="button" aria-pressed="false"
-              class="font-mono text-[10px] uppercase tracking-[0.2em] text-oat/50 transition-colors hover:text-lichen sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
+              class="font-mono text-[10px] uppercase tracking-[0.2em] text-foreground/50 transition-colors hover:text-accent sm:ml-2 sm:border-l sm:border-hairline sm:pl-6">
         Light mode
       </button>
     </nav>
@@ -435,16 +508,17 @@
   document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
 
   const themeBtn = document.getElementById("theme-toggle");
-  try { if (localStorage.getItem("gd-theme") === "oat") document.documentElement.classList.add("oat"); } catch (_) {}
+  try { const saved = localStorage.getItem("gd-theme");
+    if (saved === "light" || saved === "oat") document.documentElement.classList.add("light"); } catch (_) {}
   const syncThemeBtn = () => {
-    const light = document.documentElement.classList.contains("oat");
+    const light = document.documentElement.classList.contains("light");
     themeBtn.textContent = light ? "Dark mode" : "Light mode";
     themeBtn.setAttribute("aria-pressed", String(light));
   };
   syncThemeBtn();
   themeBtn.addEventListener("click", () => {
-    const light = document.documentElement.classList.toggle("oat");
-    try { localStorage.setItem("gd-theme", light ? "oat" : "ink"); } catch (_) {}
+    const light = document.documentElement.classList.toggle("light");
+    try { localStorage.setItem("gd-theme", light ? "light" : "dark"); } catch (_) {}
     syncThemeBtn();
   });
 
@@ -468,6 +542,42 @@ document.querySelectorAll("[data-bounce]").forEach((el) => {
     el.appendChild(s);
   });
 });
+</script>
+<script>
+/* Merch carousel — arrows nudge the native scroller; counter follows it */
+(function () {
+  "use strict";
+  const track = document.querySelector("[data-merch-track]");
+  if (!track) return;
+  const prev  = document.querySelector("[data-merch-prev]");
+  const next  = document.querySelector("[data-merch-next]");
+  const count = document.querySelector("[data-merch-count]");
+  const slides = [...track.querySelectorAll(".merch-slide")];
+  const step = () => Math.max(track.clientWidth * 0.8, 240);
+
+  prev.addEventListener("click", () => track.scrollBy({ left: -step() }));
+  next.addEventListener("click", () => track.scrollBy({ left:  step() }));
+  track.addEventListener("keydown", (e) => {
+    if (e.key === "ArrowRight") { e.preventDefault(); track.scrollBy({ left:  step() }); }
+    if (e.key === "ArrowLeft")  { e.preventDefault(); track.scrollBy({ left: -step() }); }
+  });
+
+  let raf = 0;
+  const sync = () => {
+    raf = 0;
+    const max = track.scrollWidth - track.clientWidth;
+    prev.disabled = track.scrollLeft <= 2;
+    next.disabled = track.scrollLeft >= max - 2;
+    // Counter = first slide whose left edge is at or past the scroll position
+    const left = track.getBoundingClientRect().left;
+    let i = slides.findIndex((el) => el.getBoundingClientRect().left >= left - 8);
+    if (next.disabled) i = slides.length - 1;
+    count.textContent = (i < 0 ? 0 : i) + 1;
+  };
+  track.addEventListener("scroll", () => { if (!raf) raf = requestAnimationFrame(sync); }, { passive: true });
+  addEventListener("resize", sync, { passive: true });
+  sync();
+})();
 </script>
 </body>
 </html>
